@@ -1,10 +1,10 @@
 import matplotlib
-matplotlib.use('Agg')  # Set non-interactive backend before importing plt
+matplotlib.use('Agg')  # Crucial for server environments
+import matplotlib.pyplot as plt
 import streamlit as st
 import pandas as pd
 import numpy as np
 import math
-import matplotlib.pyplot as plt
 from PIL import Image
 from matplotlib.lines import Line2D
 
