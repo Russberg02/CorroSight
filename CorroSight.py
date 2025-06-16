@@ -1,10 +1,8 @@
-import matplotlib
-matplotlib.use('Agg')  # Crucial for server environments
-import matplotlib.pyplot as plt
 import streamlit as st
 import pandas as pd
 import numpy as np
 import math
+import matplotlib.pyplot as plt
 from PIL import Image
 from matplotlib.lines import Line2D
 
@@ -288,8 +286,8 @@ if 'current_dataset' not in st.session_state:
 # App header with high contrast theme
 st.markdown(f"""
 <div style="background-color:{WHITE}; padding:20px; border-radius:5px; margin-bottom:20px; border-bottom: 3px solid {BLACK}">
-    <h1 style="color:{BLACK}; margin:0;">🔍 CorroSight: Advanced Pipeline Integrity Platform</h1>
-    <p style="color:{DARK_GRAY};">Predictive Corrosion Management • Fitness-for-Service Assessment • Lifecycle Optimization</p>
+    <h1 style="color:{BLACK}; margin:0;">⚙️ Pipeline Integrity Management System</h1>
+    <p style="color:{DARK_GRAY};">Corrosion Assessment & Fitness-for-Service Analysis</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -925,12 +923,12 @@ st.markdown(f"""
 <div style="background-color:{LIGHT_GRAY}; padding:20px; border-radius:5px; margin-top:20px; border-top: 2px solid {BLACK}">
     <div style="display: flex; justify-content: space-between; align-items: center; color:{BLACK};">
         <div>
-            <h4 style="margin:0;">CorroSight v1.0 | Advanced Pipeline Integrity Platform</h4>
-            <p style="margin:0;">© 2023 CorroSight Solutions</p>
+            <h4 style="margin:0;">Pipeline Integrity Manager v2.0 | Fitness-for-Service Analysis</h4>
+            <p style="margin:0;">© 2023 Pipeline Engineering Solutions</p>
         </div>
         <div style="text-align: right;">
-            <p style="margin:0;">Technical Support: support@corrosight.io</p>
-            <p style="margin:0;">Phone: +1 (800) COR-ROSI</p>
+            <p style="margin:0;">Technical Support: pipeline@engineering.com</p>
+            <p style="margin:0;">Phone: +1 (555) 123-4567</p>
         </div>
     </div>
 </div>
