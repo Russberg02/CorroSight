@@ -304,29 +304,25 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # Dataset tabs with industrial design
-st.markdown("""
-<div style="display: flex; justify-content: center; margin-bottom: 30px;">
-    <div style="background: white; padding: 10px; border-radius: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
-""", unsafe_allow_html=True)
-
-cols = st.columns(3)
-for i, dataset in enumerate(['Dataset 1', 'Dataset 2', 'Dataset 3']):
-    with cols[i]:
-        is_active = st.session_state.current_dataset == dataset
-        class_name = "active" if is_active else "inactive"
-        st.markdown(f'<div class="dataset-tab {class_name}" onclick="setDataset(\'{dataset}\')">{dataset}</div>', 
-                   unsafe_allow_html=True)
-
-st.markdown("""
+with st.sidebar:
+    st.markdown(f"""
+    <div style="background: linear-gradient(90deg, {PRIMARY}, #2c3e50); padding:15px; border-radius:8px; margin-bottom:20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+        <h3 style="color:{LIGHT_TEXT}; margin:0; text-align:center;">Dataset Selection</h3>
     </div>
-</div>
-
-<script>
-function setDataset(dataset) {
-    fetch('/set_dataset?dataset=' + dataset).then(() => window.location.reload());
-}
-</script>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
+    
+    dataset = st.radio(
+        "Choose dataset:",
+        ['Dataset 1', 'Dataset 2', 'Dataset 3'],
+        key='dataset_selector',
+        index=['Dataset 1', 'Dataset 2', 'Dataset 3'].index(st.session_state.current_dataset)
+    )
+    
+    if st.session_state.current_dataset != dataset:
+        st.session_state.current_dataset = dataset
+        st.rerun()
+    
+    st.markdown("---")
 
 # Sidebar with industrial theme
 with st.sidebar:
