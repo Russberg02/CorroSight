@@ -767,7 +767,7 @@ if st.session_state.get('run_analysis', False):
                 """, unsafe_allow_html=True)
             
           # Plot 1: Burst Pressure over time
-st.markdown(f"""
+          st.markdown(f"""
 <div class="section-header">
     <h3 style="margin:0;">📉 Burst Pressure Projection ({st.session_state.current_dataset})</h3>
 </div>
