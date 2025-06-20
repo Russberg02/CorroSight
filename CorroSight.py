@@ -832,7 +832,7 @@ if st.session_state.get('run_analysis', False):
             </div>
             """, unsafe_allow_html=True)
 
-                     fig1, ax1 = plt.subplots(figsize=(10, 5))
+            fig1, ax1 = plt.subplots(figsize=(10, 5))
             fig1.patch.set_facecolor(CARD_BG)
 
             # Plot burst pressure models
@@ -866,7 +866,7 @@ if st.session_state.get('run_analysis', False):
             </div>
             """, unsafe_allow_html=True)
 
-                       fig2, ax2 = plt.subplots(figsize=(10, 5))
+            fig2, ax2 = plt.subplots(figsize=(10, 5))
             fig2.patch.set_facecolor(CARD_BG)
 
             # Plot ERF values
