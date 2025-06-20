@@ -334,68 +334,119 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
     
-    # Input sections in expanders
     with st.expander("📏 Dimensional Parameters", expanded=True):
         inputs = {
             'pipe_thickness': st.number_input('Pipe Thickness, t (mm)', 
-                                            min_value=1.0, max_value=30.0, 
-                                            value=9.5, step=0.1,
-                                            help="Wall thickness of the pipe"),
+                                            min_value=0.0, max_value=30.0, 
+                                            value=0.0, step=0.1,
+                                            help="Wall thickness of the pipe (typical range: 5-20mm)"),
             'pipe_diameter': st.number_input('Pipe Diameter, D (mm)', 
-                                           min_value=50.0, max_value=500.0, 
-                                           value=168.275, step=0.1,
-                                           help="Outside diameter of pipe"),
+                                           min_value=0.0, max_value=5000.0, 
+                                           value=0.0, step=1.0,
+                                           help="Outside diameter of pipe (typical range: 50-1000mm)"),
             'pipe_length': st.number_input('Pipe Length, L (mm)', 
-                                         min_value=1000.0, max_value=5000000.0, 
-                                         value=2400000.0, step=1000.0,
+                                         min_value=0.0, max_value=10000000.0, 
+                                         value=0.0, step=1000.0,
                                          help="Total length of pipeline section"),
             'corrosion_length': st.number_input('Corrosion Length, Lc (mm)', 
-                                            min_value=0.0, max_value=500.0, 
-                                            value=23.0, step=1.0,
-                                            help="Axial length of corrosion defect"),
+                                            min_value=0.0, max_value=1000.0, 
+                                            value=0.0, step=1.0,
+                                            help="Axial length of corrosion defect (typical < 500mm)"),
             'corrosion_depth': st.number_input('Corrosion Depth, Dc (mm)', 
-                                           min_value=0.0, max_value=10.0, 
-                                           value=3.9, step=0.1,
-                                           help="Maximum depth of corrosion")
+                                           min_value=0.0, max_value=100.0, 
+                                           value=0.0, step=0.1,
+                                           help="Maximum depth of corrosion (typically < 80% wall thickness)")
         }
-    
+        
+        # Validation messages
+        if inputs['pipe_thickness'] > 0 and inputs['pipe_thickness'] < 5:
+            st.warning("⚠️ Pipe thickness below typical minimum (5mm)")
+        if inputs['pipe_thickness'] > 20:
+            st.warning("⚠️ Pipe thickness above typical maximum (20mm)")
+            
+        if inputs['pipe_diameter'] > 0 and inputs['pipe_diameter'] < 50:
+            st.warning("⚠️ Pipe diameter below typical minimum (50mm)")
+        if inputs['pipe_diameter'] > 1000:
+            st.warning("⚠️ Pipe diameter above typical maximum (1000mm)")
+            
+        if inputs['corrosion_length'] > 500:
+            st.warning("⚠️ Corrosion length exceeds typical maximum (500mm)")
+            
+        if inputs['corrosion_depth'] > 0 and inputs['pipe_thickness'] > 0:
+            if inputs['corrosion_depth'] > (0.8 * inputs['pipe_thickness']):
+                st.error("❌ Corrosion depth exceeds 80% of wall thickness - critical defect!")
+
     with st.expander("🧱 Material Properties", expanded=True):
         inputs['yield_stress'] = st.number_input('Yield Stress, Sy (MPa)', 
-                                               min_value=100.0, max_value=1000.0, 
-                                               value=290.0, step=10.0,
-                                               help="Material yield strength")
+                                               min_value=0.0, max_value=2000.0, 
+                                               value=0.0, step=10.0,
+                                               help="Material yield strength (typical range: 200-500 MPa)")
         inputs['uts'] = st.number_input('Ultimate Tensile Strength, UTS (MPa)', 
-                                      min_value=200.0, max_value=1500.0, 
-                                      value=495.0, step=10.0,
-                                      help="Material ultimate tensile strength")
-    
+                                      min_value=0.0, max_value=3000.0, 
+                                      value=0.0, step=10.0,
+                                      help="Material ultimate tensile strength (typical range: 400-800 MPa)")
+        
+        # Material validation
+        if inputs['yield_stress'] > 0 and inputs['yield_stress'] < 200:
+            st.warning("⚠️ Yield stress below typical minimum (200 MPa)")
+        if inputs['yield_stress'] > 500:
+            st.warning("⚠️ Yield stress above typical maximum (500 MPa)")
+            
+        if inputs['uts'] > 0 and inputs['uts'] < 400:
+            st.warning("⚠️ UTS below typical minimum (400 MPa)")
+        if inputs['uts'] > 800:
+            st.warning("⚠️ UTS above typical maximum (800 MPa)")
+            
+        if inputs['yield_stress'] > 0 and inputs['uts'] > 0 and inputs['yield_stress'] > inputs['uts']:
+            st.error("❌ Yield stress cannot exceed ultimate tensile strength")
+
     with st.expander("📊 Operating Conditions", expanded=True):
         inputs['max_pressure'] = st.number_input('Max Operating Pressure (MAOP) (MPa)', 
-                                               min_value=0, max_value=50, 
-                                               value=13, step=1,
-                                               help="Maximum allowable operating pressure")
+                                               min_value=0.0, max_value=100.0, 
+                                               value=0.0, step=0.1,
+                                               help="Maximum allowable operating pressure (typical range: 5-20 MPa)")
         inputs['min_pressure'] = st.number_input('Min Operating Pressure (MPa)', 
-                                                min_value=0, max_value=50, 
-                                                value=5, step=1,
+                                                min_value=0.0, max_value=100.0, 
+                                                value=0.0, step=0.1,
                                                 help="Minimum operating pressure")
-    
+        
+        # Pressure validation
+        if inputs['max_pressure'] > 0 and inputs['max_pressure'] < 5:
+            st.warning("⚠️ MAOP below typical minimum (5 MPa)")
+        if inputs['max_pressure'] > 20:
+            st.warning("⚠️ MAOP above typical maximum (20 MPa)")
+            
+        if inputs['min_pressure'] > inputs['max_pressure']:
+            st.error("❌ Minimum pressure cannot exceed maximum pressure")
+
     with st.expander("📈 Corrosion Growth", expanded=True):
         inputs['inspection_year'] = st.number_input('Inspection Year', 
                                                   min_value=1900, max_value=2100, 
                                                   value=2023, step=1,
                                                   help="Year of current inspection")
         inputs['radial_corrosion_rate'] = st.number_input('Radial Corrosion Rate (mm/year)', 
-                                                        min_value=0.01, max_value=2.0, 
-                                                        value=0.1, step=0.01,
-                                                        help="Depth increase per year")
+                                                        min_value=0.0, max_value=10.0, 
+                                                        value=0.0, step=0.01,
+                                                        help="Depth increase per year (typical range: 0.1-0.5 mm/year)")
         inputs['axial_corrosion_rate'] = st.number_input('Axial Corrosion Rate (mm/year)', 
-                                                       min_value=0.01, max_value=2.0, 
-                                                       value=0.1, step=0.01,
-                                                       help="Length increase per year")
+                                                       min_value=0.0, max_value=10.0, 
+                                                       value=0.0, step=0.01,
+                                                       help="Length increase per year (typical range: 0.1-0.5 mm/year)")
         inputs['projection_years'] = st.number_input('Projection Period (years)', 
-                                                   min_value=1, max_value=50, 
-                                                   value=20, step=1,
-                                                   help="Years to project into future")
+                                                   min_value=0, max_value=50, 
+                                                   value=0, step=1,
+                                                   help="Years to project into future (typical range: 5-20 years)")
+        
+        # Corrosion rate validation
+        if inputs['radial_corrosion_rate'] > 0.5:
+            st.warning("⚠️ High radial corrosion rate (>0.5 mm/year)")
+        if inputs['axial_corrosion_rate'] > 0.5:
+            st.warning("⚠️ High axial corrosion rate (>0.5 mm/year)")
+            
+        if inputs['projection_years'] > 0 and inputs['projection_years'] < 5:
+            st.warning("⚠️ Short projection period (<5 years)")
+        if inputs['projection_years'] > 20:
+            st.warning("⚠️ Long projection period (>20 years)")
     
     st.markdown("---")
     st.markdown(f"""
