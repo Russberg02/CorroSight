@@ -13,40 +13,39 @@ st.set_page_config(
     page_icon="⚙️"
 )
 
-# Industrial color palette
-PRIMARY = "#2c3e50"    # Steel blue
-SECONDARY = "#7f8c8d"  # Metallic gray
-ACCENT = "#e74c3c"     # Rust red
-WARNING = "#d32f2f"    # Red
-BACKGROUND = "#ecf0f1"  # Concrete light
-CARD_BG = "#ffffff"    # White cards
-DARK_TEXT = "#000000"  # Black text
-LIGHT_TEXT = "#FFFFFF" # Light text
-DATASET_COLORS = ["#2c3e50", "#7f8c8d", "#e74c3c"]  # Dataset colors
+# Updated industrial color palette with better contrast
+PRIMARY = "#2E86AB"    # Steel blue (more vibrant)
+SECONDARY = "#5C6B73"  # Metallic gray (softer)
+ACCENT = "#F18F01"     # Safety orange (replaces rust red)
+WARNING = "#C73E1D"    # Deep red (better visibility)
+BACKGROUND = "#F5F5F5"  # Light gray background
+CARD_BG = "#FFFFFF"    # White cards
+DARK_TEXT = "#333333"  # Dark gray text (better than pure black)
+LIGHT_TEXT = "#FFFFFF" # White text
+DATASET_COLORS = ["#2E86AB", "#5C6B73", "#F18F01"]  # Dataset colors
 
 # Color palette for diagrams
 COLORS = {
-    'Goodman': '#d32f2f',     # Red
-    'Soderberg': '#2c3e50',   # Steel blue
-    'Gerber': '#7f8c8d',      # Metallic gray
-    'Morrow': '#e74c3c',      # Rust red
+    'Goodman': '#2E86AB',     # Steel blue
+    'Soderberg': '#5C6B73',   # Metallic gray
+    'Gerber': '#F18F01',      # Safety orange
+    'Morrow': '#C73E1D',      # Deep red
     'ASME-Elliptic': '#6A1B9A', # Purple
-    'OperatingPoint': '#d32f2f', # Red for visibility
-    'KeyPoints': '#000000'    # Black
+    'OperatingPoint': '#2E86AB', # Blue for visibility
+    'KeyPoints': '#333333'    # Dark gray
 }
 
-# Custom CSS for industrial theme with black text
+# Custom CSS for industrial theme with better contrast
 st.markdown(f"""
 <style>
     /* Main styling - industrial gradient background */
     .stApp {{
-        background: linear-gradient(135deg, {SECONDARY} 0%, {PRIMARY} 100%) !important;
-        background-attachment: fixed !important;
+        background: {BACKGROUND} !important;
         color: {DARK_TEXT};
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }}
     
-    /* Titles and headers - black text */
+    /* Titles and headers - dark gray text */
     h1, h2, h3, h4, h5, h6 {{
         color: {DARK_TEXT} !important;
         border-bottom: 2px solid {PRIMARY};
@@ -70,7 +69,7 @@ st.markdown(f"""
         background-color: {PRIMARY};
         color: {LIGHT_TEXT};
         border-radius: 4px;
-        border: 2px solid {ACCENT};
+        border: 2px solid {PRIMARY};
         font-weight: bold;
         padding: 0.5rem 1rem;
         transition: all 0.3s ease;
@@ -121,7 +120,7 @@ st.markdown(f"""
     
     /* Section headers */
     .section-header {{
-        background: linear-gradient(90deg, {PRIMARY}, #2c3e50);
+        background: linear-gradient(90deg, {PRIMARY}, #2E86AB);
         color: {LIGHT_TEXT};
         padding: 12px 20px;
         border-radius: 8px;
@@ -154,7 +153,7 @@ st.markdown(f"""
     
     .progress-bar {{
         height: 100%;
-        background: linear-gradient(90deg, {PRIMARY}, #2c3e50);
+        background: linear-gradient(90deg, {PRIMARY}, #2E86AB);
     }}
     
     /* Table styling */
@@ -258,7 +257,7 @@ st.markdown(f"""
     
     /* Footer styling */
     .footer {{
-        background: linear-gradient(90deg, {PRIMARY}, #2c3e50);
+        background: linear-gradient(90deg, {PRIMARY}, #2E86AB);
         color: {LIGHT_TEXT};
         padding: 25px;
         border-radius: 8px;
@@ -277,9 +276,22 @@ st.markdown(f"""
         animation: pulse 2s infinite;
     }}
     
-    /* Force all text to black */
+    /* Force all text to dark gray */
     body, p, div, span, input, label, select, textarea, .stMarkdown, .stAlert, .stText, .stCodeBlock {{
         color: {DARK_TEXT} !important;
+    }}
+    
+    /* Better contrast for warning messages */
+    .stAlert {{
+        background-color: #FFF3E0 !important;
+        border-left: 4px solid {WARNING} !important;
+    }}
+    
+    /* Image styling */
+    img {{
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        border: 1px solid #E0E0E0;
     }}
 </style>
 """, unsafe_allow_html=True)
