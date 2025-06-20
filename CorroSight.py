@@ -832,14 +832,30 @@ if st.session_state.get('run_analysis', False):
             </div>
             """, unsafe_allow_html=True)
 
-            fig1, ax1 = plt.subplots(figsize=(10, 5))
-            fig1.patch.set_facecolor(CARD_BG)
+           fig1, ax1 = plt.subplots(figsize=(10, 5))
+fig1.patch.set_facecolor(CARD_BG)
 
-            # Burst Pressure Plot
-            ax1.plot(df['year'], df['P_asme'], label='ASME B31G', color=COLORS['Goodman'], linestyle='-', linewidth=2)
-            ax1.plot(df['year'], df['P_dnv'], label='DNV-RP-F101', color=COLORS['Soderberg'], linestyle='--', linewidth=2)
-            ax1.plot(df['year'], df['P_pcorrc'], label='PCORRC', color=COLORS['Gerber'], linestyle='-.', linewidth=2)
-            ax1.axhline(y=current_data['inputs']['max_pressure'], color=WARNING, linestyle=':', linewidth=2.5, label='MAOP')
+# Plot burst pressure models
+ax1.plot(df['year'], df['P_asme'], label='ASME B31G', color=COLORS['Goodman'], linestyle='-', linewidth=2)
+ax1.plot(df['year'], df['P_dnv'], label='DNV-RP-F101', color=COLORS['Soderberg'], linestyle='--', linewidth=2)
+ax1.plot(df['year'], df['P_pcorrc'], label='PCORRC', color=COLORS['Gerber'], linestyle='-.', linewidth=2)
+
+# Highlight MAOP (safety threshold) and unsafe zone
+maop = current_data['inputs']['max_pressure']
+ax1.axhline(y=maop, color=WARNING, linestyle=':', linewidth=2.5, label='MAOP')
+ax1.axhspan(ymin=0, ymax=maop, color=WARNING, alpha=0.1, label='Unsafe Zone')
+
+# Dynamic Y-axis scaling to center MAOP
+y_min = min(df[['P_asme','P_dnv','P_pcorrc']].min().min(), maop * 0.7)
+y_max = max(df[['P_asme','P_dnv','P_pcorrc']].max().max(), maop * 1.3)
+ax1.set_ylim(y_min, y_max)
+
+# Formatting
+ax1.set_xlabel('Year', fontsize=10, color=DARK_TEXT)
+ax1.set_ylabel('Burst Pressure (MPa)', fontsize=10, color=DARK_TEXT)
+ax1.set_title('Burst Pressure Projection (Unsafe when Below MAOP)', fontsize=12, fontweight='bold', color=DARK_TEXT)
+ax1.grid(True, linestyle='--', alpha=0.7, color=PRIMARY)
+ax1.legend(loc='upper right', facecolor=CARD_BG, edgecolor=DARK_TEXT)
 
             # Formatting
             ax1.set_xlabel('Year', fontsize=10, color=DARK_TEXT)
@@ -865,15 +881,29 @@ if st.session_state.get('run_analysis', False):
             </div>
             """, unsafe_allow_html=True)
 
-            fig2, ax2 = plt.subplots(figsize=(10, 5))
-            fig2.patch.set_facecolor(CARD_BG)
+           fig2, ax2 = plt.subplots(figsize=(10, 5))
+fig2.patch.set_facecolor(CARD_BG)
 
-            # ERF Plot
-            ax2.plot(df['year'], df['erf_asme'], label='ASME ERF', color=COLORS['Goodman'], linestyle='-', linewidth=2)
-            ax2.plot(df['year'], df['erf_dnv'], label='DNV ERF', color=COLORS['Soderberg'], linestyle='--', linewidth=2)
-            ax2.plot(df['year'], df['erf_pcorrc'], label='PCORRC ERF', color=COLORS['Gerber'], linestyle='-.', linewidth=2)
-            ax2.plot(df['year'], df['critical_erf'], label='Critical ERF', color=DARK_TEXT, linewidth=3)
-            ax2.axhline(y=1.0, color=WARNING, linestyle='-', linewidth=2, label='Failure Threshold')
+# Plot ERF values
+ax2.plot(df['year'], df['erf_asme'], label='ASME ERF', color=COLORS['Goodman'], linestyle='-', linewidth=2)
+ax2.plot(df['year'], df['erf_dnv'], label='DNV ERF', color=COLORS['Soderberg'], linestyle='--', linewidth=2)
+ax2.plot(df['year'], df['erf_pcorrc'], label='PCORRC ERF', color=COLORS['Gerber'], linestyle='-.', linewidth=2)
+
+# Highlight safety threshold (ERF=1) and unsafe zone
+ax2.axhline(y=1.0, color=WARNING, linestyle='-', linewidth=2.5, label='Safety Threshold (ERF=1)')
+erf_max = max(df[['erf_asme','erf_dnv','erf_pcorrc']].max().max(), 1.3)
+ax2.axhspan(ymin=1.0, ymax=erf_max, color=WARNING, alpha=0.1, label='Unsafe Zone')
+
+# Dynamic Y-axis scaling to center ERF=1
+erf_min = min(df[['erf_asme','erf_dnv','erf_pcorrc']].min().min(), 0.7)
+ax2.set_ylim(erf_min, erf_max)
+
+# Formatting
+ax2.set_xlabel('Year', fontsize=10, color=DARK_TEXT)
+ax2.set_ylabel('ERF (MAOP/Burst Pressure)', fontsize=10, color=DARK_TEXT)
+ax2.set_title('ERF Projection (Unsafe when Above 1.0)', fontsize=12, fontweight='bold', color=DARK_TEXT)
+ax2.grid(True, linestyle='--', alpha=0.7, color=PRIMARY)
+ax2.legend(loc='upper right', facecolor=CARD_BG, edgecolor=DARK_TEXT)
 
             # Formatting
             ax2.set_xlabel('Year', fontsize=10, color=DARK_TEXT)
