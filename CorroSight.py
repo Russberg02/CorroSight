@@ -340,27 +340,80 @@ with st.sidebar:
     
     # Input sections in expanders
     with st.expander("📏 Dimensional Parameters", expanded=True):
-        inputs = {
-            'pipe_thickness': st.slider('Pipe Thickness, t (mm)', 1.0, 30.0, 9.5, 0.1),
-            'pipe_diameter': st.slider('Pipe Diameter, D (mm)', 50.0, 500.0, 168.275, 0.1),
-            'pipe_length': st.slider('Pipe Length, L (mm)', 1000.0, 5000000.0, 2400000.0, 1000.0),
-            'corrosion_length': st.slider('Corrosion Length, Lc (mm)', 0.0, 500.0, 23.0, 1.0),
-            'corrosion_depth': st.slider('Corrosion Depth, Dc (mm)', 0.0, 10.0, 3.9, 0.1)
-        }
+        col1, col2 = st.columns(2)
+        with col1:
+            inputs = {
+                'pipe_thickness': st.number_input('Pipe Thickness, t (mm)', 
+                                                min_value=1.0, max_value=30.0, 
+                                                value=9.5, step=0.1,
+                                                help="Wall thickness of the pipe"),
+                'pipe_diameter': st.number_input('Pipe Diameter, D (mm)', 
+                                               min_value=50.0, max_value=500.0, 
+                                               value=168.275, step=0.1,
+                                               help="Outside diameter of pipe"),
+                'pipe_length': st.number_input('Pipe Length, L (mm)', 
+                                             min_value=1000.0, max_value=5000000.0, 
+                                             value=2400000.0, step=1000.0,
+                                             help="Total length of pipeline section")
+            }
+        with col2:
+            inputs.update({
+                'corrosion_length': st.number_input('Corrosion Length, Lc (mm)', 
+                                                  min_value=0.0, max_value=500.0, 
+                                                  value=23.0, step=1.0,
+                                                  help="Axial length of corrosion defect"),
+                'corrosion_depth': st.number_input('Corrosion Depth, Dc (mm)', 
+                                                 min_value=0.0, max_value=10.0, 
+                                                 value=3.9, step=0.1,
+                                                 help="Maximum depth of corrosion")
+            })
     
     with st.expander("🧱 Material Properties", expanded=True):
-        inputs['yield_stress'] = st.slider('Yield Stress, Sy (MPa)', 100.0, 1000.0, 290.0, 10.0)
-        inputs['uts'] = st.slider('Ultimate Tensile Strength, UTS (MPa)', 200.0, 1500.0, 495.0, 10.0)
+        col1, col2 = st.columns(2)
+        with col1:
+            inputs['yield_stress'] = st.number_input('Yield Stress, Sy (MPa)', 
+                                                   min_value=100.0, max_value=1000.0, 
+                                                   value=290.0, step=10.0,
+                                                   help="Material yield strength")
+        with col2:
+            inputs['uts'] = st.number_input('Ultimate Tensile Strength, UTS (MPa)', 
+                                          min_value=200.0, max_value=1500.0, 
+                                          value=495.0, step=10.0,
+                                          help="Material ultimate tensile strength")
     
     with st.expander("📊 Operating Conditions", expanded=True):
-        inputs['max_pressure'] = st.slider('Max Operating Pressure (MAOP) (MPa)', 0, 50, 13, 1)
-        inputs['min_pressure'] = st.slider('Min Operating Pressure (MPa)', 0, 50, 5, 1)
+        col1, col2 = st.columns(2)
+        with col1:
+            inputs['max_pressure'] = st.number_input('Max Operating Pressure (MAOP) (MPa)', 
+                                                   min_value=0, max_value=50, 
+                                                   value=13, step=1,
+                                                   help="Maximum allowable operating pressure")
+        with col2:
+            inputs['min_pressure'] = st.number_input('Min Operating Pressure (MPa)', 
+                                                    min_value=0, max_value=50, 
+                                                    value=5, step=1,
+                                                    help="Minimum operating pressure")
     
     with st.expander("📈 Corrosion Growth", expanded=True):
-        inputs['inspection_year'] = st.number_input('Inspection Year', min_value=1900, max_value=2100, value=2023)
-        inputs['radial_corrosion_rate'] = st.slider('Radial Corrosion Rate (mm/year)', 0.01, 2.0, 0.1, 0.01)
-        inputs['axial_corrosion_rate'] = st.slider('Axial Corrosion Rate (mm/year)', 0.01, 2.0, 0.1, 0.01)
-        inputs['projection_years'] = st.slider('Projection Period (years)', 1, 50, 20, 1)
+        col1, col2 = st.columns(2)
+        with col1:
+            inputs['inspection_year'] = st.number_input('Inspection Year', 
+                                                      min_value=1900, max_value=2100, 
+                                                      value=2023, step=1,
+                                                      help="Year of current inspection")
+            inputs['radial_corrosion_rate'] = st.number_input('Radial Corrosion Rate (mm/year)', 
+                                                            min_value=0.01, max_value=2.0, 
+                                                            value=0.1, step=0.01,
+                                                            help="Depth increase per year")
+        with col2:
+            inputs['axial_corrosion_rate'] = st.number_input('Axial Corrosion Rate (mm/year)', 
+                                                           min_value=0.01, max_value=2.0, 
+                                                           value=0.1, step=0.01,
+                                                           help="Length increase per year")
+            inputs['projection_years'] = st.number_input('Projection Period (years)', 
+                                                       min_value=1, max_value=50, 
+                                                       value=20, step=1,
+                                                       help="Years to project into future")
     
     st.markdown("---")
     st.markdown(f"""
