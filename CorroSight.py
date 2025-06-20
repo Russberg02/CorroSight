@@ -475,7 +475,7 @@ with col2:
     </div>
     """, unsafe_allow_html=True)
 
-# Burst pressure models (same as before)
+# Burst pressure models
 def modified_asme_b31g(D, t, d, L, Sy):
     flow_stress = Sy + 68.95  # MPa (SMYS + 10 ksi)
     limit = math.sqrt(50 * D * t)
@@ -494,7 +494,7 @@ def dnv_rp_f101(D, t, d, L, UTS):
 def pcorrc(D, t, d, L, UTS):
     return 0.95 * UTS * (2 * t / D) * (1 - d/t) * (1 - math.exp(-0.224 * L / math.sqrt(D * (t - d))))
 
-# Calculations (same as before)
+# Calculations
 def calculate_pressures(inputs):
     t = inputs['pipe_thickness']
     D = inputs['pipe_diameter']
@@ -572,7 +572,7 @@ def calculate_fatigue_criteria(sigma_a, sigma_m, Se, UTS, Sy, sigma_f):
         'ASME-Elliptic': np.sqrt((sigma_a / Se)**2 + (sigma_m / Sy)**2)
     }
 
-# FFS Assessment (same as before)
+# FFS Assessment
 def calculate_ffs_assessment(inputs, current_depth, current_length):
     results = []
     failure_years = {}
@@ -766,73 +766,73 @@ if st.session_state.get('run_analysis', False):
                 </div>
                 """, unsafe_allow_html=True)
             
-          # Plot 1: Burst Pressure over time
-          st.markdown(f"""
-<div class="section-header">
-    <h3 style="margin:0;">📉 Burst Pressure Projection ({st.session_state.current_dataset})</h3>
-</div>
-""", unsafe_allow_html=True)
+            # Plot 1: Burst Pressure over time
+            st.markdown(f"""
+            <div class="section-header">
+                <h3 style="margin:0;">📉 Burst Pressure Projection ({st.session_state.current_dataset})</h3>
+            </div>
+            """, unsafe_allow_html=True)
 
-fig1, ax1 = plt.subplots(figsize=(10, 5))
-fig1.patch.set_facecolor(CARD_BG)
+            fig1, ax1 = plt.subplots(figsize=(10, 5))
+            fig1.patch.set_facecolor(CARD_BG)
 
-# Burst Pressure Plot
-ax1.plot(df['year'], df['P_asme'], label='ASME B31G', color=COLORS['Goodman'], linestyle='-', linewidth=2)
-ax1.plot(df['year'], df['P_dnv'], label='DNV-RP-F101', color=COLORS['Soderberg'], linestyle='--', linewidth=2)
-ax1.plot(df['year'], df['P_pcorrc'], label='PCORRC', color=COLORS['Gerber'], linestyle='-.', linewidth=2)
-ax1.axhline(y=current_data['inputs']['max_pressure'], color=WARNING, linestyle=':', linewidth=2.5, label='MAOP')
+            # Burst Pressure Plot
+            ax1.plot(df['year'], df['P_asme'], label='ASME B31G', color=COLORS['Goodman'], linestyle='-', linewidth=2)
+            ax1.plot(df['year'], df['P_dnv'], label='DNV-RP-F101', color=COLORS['Soderberg'], linestyle='--', linewidth=2)
+            ax1.plot(df['year'], df['P_pcorrc'], label='PCORRC', color=COLORS['Gerber'], linestyle='-.', linewidth=2)
+            ax1.axhline(y=current_data['inputs']['max_pressure'], color=WARNING, linestyle=':', linewidth=2.5, label='MAOP')
 
-# Formatting
-ax1.set_xlabel('Year', fontsize=10, color=DARK_TEXT)
-ax1.set_ylabel('Burst Pressure (MPa)', fontsize=10, color=DARK_TEXT)
-ax1.set_title('Burst Pressure Projection', fontsize=12, fontweight='bold', color=DARK_TEXT)
-ax1.grid(True, linestyle='--', alpha=0.7, color=PRIMARY)
-ax1.legend(loc='upper right', facecolor=CARD_BG, edgecolor=DARK_TEXT)
+            # Formatting
+            ax1.set_xlabel('Year', fontsize=10, color=DARK_TEXT)
+            ax1.set_ylabel('Burst Pressure (MPa)', fontsize=10, color=DARK_TEXT)
+            ax1.set_title('Burst Pressure Projection', fontsize=12, fontweight='bold', color=DARK_TEXT)
+            ax1.grid(True, linestyle='--', alpha=0.7, color=PRIMARY)
+            ax1.legend(loc='upper right', facecolor=CARD_BG, edgecolor=DARK_TEXT)
 
-# Set axis colors
-ax1.spines['bottom'].set_color(DARK_TEXT)
-ax1.spines['top'].set_color(DARK_TEXT) 
-ax1.spines['right'].set_color(DARK_TEXT)
-ax1.spines['left'].set_color(DARK_TEXT)
-ax1.tick_params(axis='x', colors=DARK_TEXT)
-ax1.tick_params(axis='y', colors=DARK_TEXT)
+            # Set axis colors
+            ax1.spines['bottom'].set_color(DARK_TEXT)
+            ax1.spines['top'].set_color(DARK_TEXT) 
+            ax1.spines['right'].set_color(DARK_TEXT)
+            ax1.spines['left'].set_color(DARK_TEXT)
+            ax1.tick_params(axis='x', colors=DARK_TEXT)
+            ax1.tick_params(axis='y', colors=DARK_TEXT)
 
-st.pyplot(fig1)
+            st.pyplot(fig1)
 
-# Plot 2: ERF over time
-st.markdown(f"""
-<div class="section-header">
-    <h3 style="margin:0;">📈 Estimated Repair Factor (ERF) Projection ({st.session_state.current_dataset})</h3>
-</div>
-""", unsafe_allow_html=True)
+            # Plot 2: ERF over time
+            st.markdown(f"""
+            <div class="section-header">
+                <h3 style="margin:0;">📈 Estimated Repair Factor (ERF) Projection ({st.session_state.current_dataset})</h3>
+            </div>
+            """, unsafe_allow_html=True)
 
-fig2, ax2 = plt.subplots(figsize=(10, 5))
-fig2.patch.set_facecolor(CARD_BG)
+            fig2, ax2 = plt.subplots(figsize=(10, 5))
+            fig2.patch.set_facecolor(CARD_BG)
 
-# ERF Plot
-ax2.plot(df['year'], df['erf_asme'], label='ASME ERF', color=COLORS['Goodman'], linestyle='-', linewidth=2)
-ax2.plot(df['year'], df['erf_dnv'], label='DNV ERF', color=COLORS['Soderberg'], linestyle='--', linewidth=2)
-ax2.plot(df['year'], df['erf_pcorrc'], label='PCORRC ERF', color=COLORS['Gerber'], linestyle='-.', linewidth=2)
-ax2.plot(df['year'], df['critical_erf'], label='Critical ERF', color=DARK_TEXT, linewidth=3)
-ax2.axhline(y=1.0, color=WARNING, linestyle='-', linewidth=2, label='Failure Threshold')
+            # ERF Plot
+            ax2.plot(df['year'], df['erf_asme'], label='ASME ERF', color=COLORS['Goodman'], linestyle='-', linewidth=2)
+            ax2.plot(df['year'], df['erf_dnv'], label='DNV ERF', color=COLORS['Soderberg'], linestyle='--', linewidth=2)
+            ax2.plot(df['year'], df['erf_pcorrc'], label='PCORRC ERF', color=COLORS['Gerber'], linestyle='-.', linewidth=2)
+            ax2.plot(df['year'], df['critical_erf'], label='Critical ERF', color=DARK_TEXT, linewidth=3)
+            ax2.axhline(y=1.0, color=WARNING, linestyle='-', linewidth=2, label='Failure Threshold')
 
-# Formatting
-ax2.set_xlabel('Year', fontsize=10, color=DARK_TEXT)
-ax2.set_ylabel('ERF (MAOP/Burst Pressure)', fontsize=10, color=DARK_TEXT)
-ax2.set_title('Estimated Repair Factor Projection', fontsize=12, fontweight='bold', color=DARK_TEXT)
-ax2.grid(True, linestyle='--', alpha=0.7, color=PRIMARY)
-ax2.legend(loc='upper right', facecolor=CARD_BG, edgecolor=DARK_TEXT)
+            # Formatting
+            ax2.set_xlabel('Year', fontsize=10, color=DARK_TEXT)
+            ax2.set_ylabel('ERF (MAOP/Burst Pressure)', fontsize=10, color=DARK_TEXT)
+            ax2.set_title('Estimated Repair Factor Projection', fontsize=12, fontweight='bold', color=DARK_TEXT)
+            ax2.grid(True, linestyle='--', alpha=0.7, color=PRIMARY)
+            ax2.legend(loc='upper right', facecolor=CARD_BG, edgecolor=DARK_TEXT)
 
-# Set axis colors
-ax2.spines['bottom'].set_color(DARK_TEXT)
-ax2.spines['top'].set_color(DARK_TEXT) 
-ax2.spines['right'].set_color(DARK_TEXT)
-ax2.spines['left'].set_color(DARK_TEXT)
-ax2.tick_params(axis='x', colors=DARK_TEXT)
-ax2.tick_params(axis='y', colors=DARK_TEXT)
+            # Set axis colors
+            ax2.spines['bottom'].set_color(DARK_TEXT)
+            ax2.spines['top'].set_color(DARK_TEXT) 
+            ax2.spines['right'].set_color(DARK_TEXT)
+            ax2.spines['left'].set_color(DARK_TEXT)
+            ax2.tick_params(axis='x', colors=DARK_TEXT)
+            ax2.tick_params(axis='y', colors=DARK_TEXT)
 
-st.pyplot(fig2)
-            
+            st.pyplot(fig2)
+
             # Display detailed table
             with st.expander("Detailed Projection Data", expanded=False):
                 # Format columns
