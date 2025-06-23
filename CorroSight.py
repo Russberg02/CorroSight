@@ -510,6 +510,76 @@ with st.sidebar:
             st.warning("⚠️ Short projection period (<5 years)")
         if inputs['projection_years'] > 20:
             st.warning("⚠️ Long projection period (>20 years)")
+
+    st.markdown("---")
+    
+    # Action buttons in sidebar
+    if st.button('Run Analysis', use_container_width=True, type="primary"):
+        st.session_state.run_analysis = True
+        # Inputs are already stored in real-time, just clear results
+        st.session_state.datasets[st.session_state.current_dataset]['results'] = None
+        st.rerun()
+    
+    if st.button('Reset All', use_container_width=True):
+        st.session_state.run_analysis = False
+        # Reset all datasets to initial state
+        st.session_state.datasets = {
+            'Dataset 1': {
+                'inputs': {
+                    'pipe_thickness': 0.0,
+                    'pipe_diameter': 0.0,
+                    'pipe_length': 0.0,
+                    'corrosion_length': 0.0,
+                    'corrosion_depth': 0.0,
+                    'yield_stress': 0.0,
+                    'uts': 0.0,
+                    'max_pressure': 0.0,
+                    'min_pressure': 0.0,
+                    'inspection_year': 2023,
+                    'radial_corrosion_rate': 0.0,
+                    'axial_corrosion_rate': 0.0,
+                    'projection_years': 0
+                },
+                'results': None
+            },
+            'Dataset 2': {
+                'inputs': {
+                    'pipe_thickness': 0.0,
+                    'pipe_diameter': 0.0,
+                    'pipe_length': 0.0,
+                    'corrosion_length': 0.0,
+                    'corrosion_depth': 0.0,
+                    'yield_stress': 0.0,
+                    'uts': 0.0,
+                    'max_pressure': 0.0,
+                    'min_pressure': 0.0,
+                    'inspection_year': 2023,
+                    'radial_corrosion_rate': 0.0,
+                    'axial_corrosion_rate': 0.0,
+                    'projection_years': 0
+                },
+                'results': None
+            },
+            'Dataset 3': {
+                'inputs': {
+                    'pipe_thickness': 0.0,
+                    'pipe_diameter': 0.0,
+                    'pipe_length': 0.0,
+                    'corrosion_length': 0.0,
+                    'corrosion_depth': 0.0,
+                    'yield_stress': 0.0,
+                    'uts': 0.0,
+                    'max_pressure': 0.0,
+                    'min_pressure': 0.0,
+                    'inspection_year': 2023,
+                    'radial_corrosion_rate': 0.0,
+                    'axial_corrosion_rate': 0.0,
+                    'projection_years': 0
+                },
+                'results': None
+            }
+        }
+        st.rerun()
     
     st.markdown("---")
     st.markdown(f"""
@@ -525,73 +595,6 @@ with st.sidebar:
         </div>
     </div>
     """, unsafe_allow_html=True)
-
-if st.button('Run Analysis', use_container_width=True, type="primary"):
-    st.session_state.run_analysis = True
-    # Inputs are already stored in real-time, just clear results
-    st.session_state.datasets[st.session_state.current_dataset]['results'] = None
-    st.rerun()
-    
-if st.button('Reset All', use_container_width=True):
-    st.session_state.run_analysis = False
-    # Reset all datasets to initial state
-    st.session_state.datasets = {
-        'Dataset 1': {
-            'inputs': {
-                'pipe_thickness': 0.0,
-                'pipe_diameter': 0.0,
-                'pipe_length': 0.0,
-                'corrosion_length': 0.0,
-                'corrosion_depth': 0.0,
-                'yield_stress': 0.0,
-                'uts': 0.0,
-                'max_pressure': 0.0,
-                'min_pressure': 0.0,
-                'inspection_year': 2023,
-                'radial_corrosion_rate': 0.0,
-                'axial_corrosion_rate': 0.0,
-                'projection_years': 0
-            },
-            'results': None
-        },
-        'Dataset 2': {
-            'inputs': {
-                'pipe_thickness': 0.0,
-                'pipe_diameter': 0.0,
-                'pipe_length': 0.0,
-                'corrosion_length': 0.0,
-                'corrosion_depth': 0.0,
-                'yield_stress': 0.0,
-                'uts': 0.0,
-                'max_pressure': 0.0,
-                'min_pressure': 0.0,
-                'inspection_year': 2023,
-                'radial_corrosion_rate': 0.0,
-                'axial_corrosion_rate': 0.0,
-                'projection_years': 0
-            },
-            'results': None
-        },
-        'Dataset 3': {
-            'inputs': {
-                'pipe_thickness': 0.0,
-                'pipe_diameter': 0.0,
-                'pipe_length': 0.0,
-                'corrosion_length': 0.0,
-                'corrosion_depth': 0.0,
-                'yield_stress': 0.0,
-                'uts': 0.0,
-                'max_pressure': 0.0,
-                'min_pressure': 0.0,
-                'inspection_year': 2023,
-                'radial_corrosion_rate': 0.0,
-                'axial_corrosion_rate': 0.0,
-                'projection_years': 0
-            },
-            'results': None
-        }
-    }
-    st.rerun()
 
 # Image and intro section
 st.subheader('Pipeline Configuration')
