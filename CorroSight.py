@@ -525,30 +525,13 @@ with st.sidebar:
         </div>
     </div>
     """, unsafe_allow_html=True)
-    
-    # Replace this:
-if st.button('Run Analysis', use_container_width=True, type="primary"):
-    st.session_state.run_analysis = True
-    # Store inputs for current dataset
-    st.session_state.datasets[st.session_state.current_dataset]['inputs'] = inputs
-    # Clear results to force recalculation
-    st.session_state.datasets[st.session_state.current_dataset]['results'] = None
 
-# With this:
 if st.button('Run Analysis', use_container_width=True, type="primary"):
     st.session_state.run_analysis = True
     # Inputs are already stored in real-time, just clear results
     st.session_state.datasets[st.session_state.current_dataset]['results'] = None
     st.rerun()
     
-    # Replace this:
-if st.button('Reset All', use_container_width=True):
-    st.session_state.run_analysis = False
-    # Reset all datasets
-    for key in st.session_state.datasets:
-        st.session_state.datasets[key] = {'inputs': None, 'results': None}
-
-# With this:
 if st.button('Reset All', use_container_width=True):
     st.session_state.run_analysis = False
     # Reset all datasets to initial state
@@ -556,12 +539,57 @@ if st.button('Reset All', use_container_width=True):
         'Dataset 1': {
             'inputs': {
                 'pipe_thickness': 0.0,
-                # ... all other fields initialized to 0
+                'pipe_diameter': 0.0,
+                'pipe_length': 0.0,
+                'corrosion_length': 0.0,
+                'corrosion_depth': 0.0,
+                'yield_stress': 0.0,
+                'uts': 0.0,
+                'max_pressure': 0.0,
+                'min_pressure': 0.0,
+                'inspection_year': 2023,
+                'radial_corrosion_rate': 0.0,
+                'axial_corrosion_rate': 0.0,
+                'projection_years': 0
             },
             'results': None
         },
-        'Dataset 2': { Same structure as Dataset 1 },
-        'Dataset 3': { Same structure as Dataset 1 }
+        'Dataset 2': {
+            'inputs': {
+                'pipe_thickness': 0.0,
+                'pipe_diameter': 0.0,
+                'pipe_length': 0.0,
+                'corrosion_length': 0.0,
+                'corrosion_depth': 0.0,
+                'yield_stress': 0.0,
+                'uts': 0.0,
+                'max_pressure': 0.0,
+                'min_pressure': 0.0,
+                'inspection_year': 2023,
+                'radial_corrosion_rate': 0.0,
+                'axial_corrosion_rate': 0.0,
+                'projection_years': 0
+            },
+            'results': None
+        },
+        'Dataset 3': {
+            'inputs': {
+                'pipe_thickness': 0.0,
+                'pipe_diameter': 0.0,
+                'pipe_length': 0.0,
+                'corrosion_length': 0.0,
+                'corrosion_depth': 0.0,
+                'yield_stress': 0.0,
+                'uts': 0.0,
+                'max_pressure': 0.0,
+                'min_pressure': 0.0,
+                'inspection_year': 2023,
+                'radial_corrosion_rate': 0.0,
+                'axial_corrosion_rate': 0.0,
+                'projection_years': 0
+            },
+            'results': None
+        }
     }
     st.rerun()
 
