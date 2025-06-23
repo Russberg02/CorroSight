@@ -560,8 +560,8 @@ if st.button('Reset All', use_container_width=True):
             },
             'results': None
         },
-        'Dataset 2': {  # Same structure as Dataset 1 },
-        'Dataset 3': {  # Same structure as Dataset 1 }
+        'Dataset 2': {  Same structure as Dataset 1 },
+        'Dataset 3': {  Same structure as Dataset 1 }
     }
     st.rerun()
 
