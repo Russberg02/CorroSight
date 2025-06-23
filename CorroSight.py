@@ -299,9 +299,60 @@ st.markdown(f"""
 # Initialize session state for datasets
 if 'datasets' not in st.session_state:
     st.session_state.datasets = {
-        'Dataset 1': {'inputs': None, 'results': None},
-        'Dataset 2': {'inputs': None, 'results': None},
-        'Dataset 3': {'inputs': None, 'results': None}
+        'Dataset 1': {
+            'inputs': {
+                'pipe_thickness': 0.0,
+                'pipe_diameter': 0.0,
+                'pipe_length': 0.0,
+                'corrosion_length': 0.0,
+                'corrosion_depth': 0.0,
+                'yield_stress': 0.0,
+                'uts': 0.0,
+                'max_pressure': 0.0,
+                'min_pressure': 0.0,
+                'inspection_year': 2023,
+                'radial_corrosion_rate': 0.0,
+                'axial_corrosion_rate': 0.0,
+                'projection_years': 0
+            },
+            'results': None
+        },
+        'Dataset 2': {
+            'inputs': {
+                'pipe_thickness': 0.0,
+                'pipe_diameter': 0.0,
+                'pipe_length': 0.0,
+                'corrosion_length': 0.0,
+                'corrosion_depth': 0.0,
+                'yield_stress': 0.0,
+                'uts': 0.0,
+                'max_pressure': 0.0,
+                'min_pressure': 0.0,
+                'inspection_year': 2023,
+                'radial_corrosion_rate': 0.0,
+                'axial_corrosion_rate': 0.0,
+                'projection_years': 0
+            },
+            'results': None
+        },
+        'Dataset 3': {
+            'inputs': {
+                'pipe_thickness': 0.0,
+                'pipe_diameter': 0.0,
+                'pipe_length': 0.0,
+                'corrosion_length': 0.0,
+                'corrosion_depth': 0.0,
+                'yield_stress': 0.0,
+                'uts': 0.0,
+                'max_pressure': 0.0,
+                'min_pressure': 0.0,
+                'inspection_year': 2023,
+                'radial_corrosion_rate': 0.0,
+                'axial_corrosion_rate': 0.0,
+                'projection_years': 0
+            },
+            'results': None
+        }
     }
 
 if 'current_dataset' not in st.session_state:
@@ -346,9 +397,10 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
     
-    with st.expander("📏 Dimensional Parameters", expanded=True):
-        inputs = {
-            'pipe_thickness': st.number_input('Pipe Thickness, t (mm)', 
+    current_inputs = st.session_state.datasets[st.session_state.current_dataset]['inputs']
+
+with st.expander("📏 Dimensional Parameters", expanded=True):
+    current_inputs['pipe_thickness'] = st.number_input('Pipe Thickness, t (mm)', 
                                             min_value=0.0, max_value=30.0, 
                                             value=0.0, step=0.1,
                                             help="Wall thickness of the pipe (typical range: 5-20mm)"),
@@ -476,17 +528,26 @@ with st.sidebar:
     """, unsafe_allow_html=True)
     
     if st.button('Run Analysis', use_container_width=True, type="primary"):
-        st.session_state.run_analysis = True
-        # Store inputs for current dataset
-        st.session_state.datasets[st.session_state.current_dataset]['inputs'] = inputs
-        # Clear results to force recalculation
-        st.session_state.datasets[st.session_state.current_dataset]['results'] = None
+    st.session_state.run_analysis = True
+    # Inputs are already stored in real-time, just clear results
+    st.session_state.datasets[st.session_state.current_dataset]['results'] = None
+    st.rerun()
     
     if st.button('Reset All', use_container_width=True):
-        st.session_state.run_analysis = False
-        # Reset all datasets
-        for key in st.session_state.datasets:
-            st.session_state.datasets[key] = {'inputs': None, 'results': None}
+    st.session_state.run_analysis = False
+    # Reset all datasets to initial state
+    st.session_state.datasets = {
+        'Dataset 1': {
+            'inputs': {
+                'pipe_thickness': 0.0,
+                # ... all other fields initialized to 0
+            },
+            'results': None
+        },
+        'Dataset 2': {  # Same structure as Dataset 1 },
+        'Dataset 3': {  # Same structure as Dataset 1 }
+    }
+    st.rerun()
 
 # Image and intro section
 st.subheader('Pipeline Configuration')
