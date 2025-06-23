@@ -26,19 +26,273 @@ DATASET_COLORS = ["#2E86AB", "#5C6B73", "#F18F01"]  # Dataset colors
 
 # Color palette for diagrams
 COLORS = {
-    'Goodman': '#2E86AB',
-    'Soderberg': '#5C6B73',
-    'Gerber': '#F18F01',
-    'Morrow': '#C73E1D',
-    'ASME-Elliptic': '#6A1B9A',
-    'OperatingPoint': '#2E86AB',
-    'KeyPoints': '#333333'
+    'Goodman': '#2E86AB',     # Steel blue
+    'Soderberg': '#5C6B73',   # Metallic gray
+    'Gerber': '#F18F01',      # Safety orange
+    'Morrow': '#C73E1D',      # Deep red
+    'ASME-Elliptic': '#6A1B9A', # Purple
+    'OperatingPoint': '#2E86AB', # Blue for visibility
+    'KeyPoints': '#333333'    # Dark gray
 }
 
-# Custom CSS for industrial theme
+# Custom CSS for industrial theme with better contrast
 st.markdown(f"""
 <style>
-    /* Your existing CSS styles here */
+    /* Main styling - industrial gradient background */
+    .stApp {{
+        background: {BACKGROUND} !important;
+        color: {DARK_TEXT};
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }}
+    
+    /* Titles and headers - dark gray text */
+    h1, h2, h3, h4, h5, h6 {{
+        color: {DARK_TEXT} !important;
+        border-bottom: 2px solid {PRIMARY};
+        padding-bottom: 0.3rem;
+    }}
+    
+    /* Sidebar styling */
+    [data-testid="stSidebar"] {{
+        background-color: {CARD_BG};
+        color: {DARK_TEXT};
+        border-right: 2px solid {PRIMARY};
+    }}
+    
+    .sidebar .sidebar-content {{
+        background-color: {CARD_BG};
+        color: {DARK_TEXT};
+    }}
+    
+    /* Button styling */
+    .stButton>button {{
+        background-color: {PRIMARY};
+        color: {LIGHT_TEXT};
+        border-radius: 4px;
+        border: 2px solid {PRIMARY};
+        font-weight: bold;
+        padding: 0.5rem 1rem;
+        transition: all 0.3s ease;
+    }}
+    
+    .stButton>button:hover {{
+        background-color: {ACCENT};
+        color: {LIGHT_TEXT};
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }}
+    
+    /* Card styling */
+    .card {{
+        background: {CARD_BG};
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        padding: 20px;
+        margin-bottom: 20px;
+        border-left: 4px solid {PRIMARY};
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }}
+    
+    .card:hover {{
+        transform: translateY(-5px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    }}
+    
+    /* Status indicators */
+    .safe {{
+        color: #43A047;
+        font-weight: bold;
+    }}
+    
+    .unsafe {{
+        color: {WARNING};
+        font-weight: bold;
+    }}
+    
+    /* Value display */
+    .value-display {{
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: {PRIMARY};
+        text-align: center;
+        margin: 10px 0;
+    }}
+    
+    /* Section headers */
+    .section-header {{
+        background: linear-gradient(90deg, {PRIMARY}, #2E86AB);
+        color: {LIGHT_TEXT};
+        padding: 12px 20px;
+        border-radius: 8px;
+        margin: 25px 0 15px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }}
+    
+    /* Material design elements */
+    .material-card {{
+        background: {CARD_BG};
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+    }}
+    
+    .material-card:hover {{
+        box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+    }}
+    
+    /* Progress bars */
+    .progress-container {{
+        height: 10px;
+        background-color: #E0E0E0;
+        border-radius: 5px;
+        margin: 15px 0;
+        overflow: hidden;
+    }}
+    
+    .progress-bar {{
+        height: 100%;
+        background: linear-gradient(90deg, {PRIMARY}, #2E86AB);
+    }}
+    
+    /* Table styling */
+    table {{
+        border: 1px solid #E0E0E0 !important;
+        border-radius: 8px;
+        overflow: hidden;
+    }}
+    
+    th {{
+        background-color: {PRIMARY} !important;
+        color: {LIGHT_TEXT} !important;
+    }}
+    
+    tr:nth-child(even) {{
+        background-color: #F5F7FA !important;
+    }}
+    
+    /* Expander styling */
+    .stExpander {{
+        border: 1px solid #E0E0E0 !important;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        overflow: hidden;
+    }}
+    
+    .stExpander summary {{
+        background-color: {PRIMARY} !important;
+        color: {LIGHT_TEXT} !important;
+        padding: 12px 15px;
+        font-weight: bold;
+    }}
+    
+    /* Plot styling */
+    .st-emotion-cache-1v0mbdj {{
+        border-radius: 8px;
+        padding: 15px;
+        background-color: {CARD_BG} !important;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+    }}
+    
+    /* Input fields */
+    .stNumberInput, .stSlider {{
+        color: {DARK_TEXT} !important;
+    }}
+    
+    /* Slider styling */
+    div[data-baseweb="slider"] > div:first-child {{
+        background-color: #E0E0E0 !important;
+    }}
+    
+    div[role="slider"] {{
+        background-color: {PRIMARY} !important;
+        border: none !important;
+    }}
+    
+    /* Dataset tabs */
+    .dataset-tab {{
+        padding: 10px 20px;
+        margin-right: 10px;
+        border-radius: 30px;
+        cursor: pointer;
+        display: inline-block;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }}
+    
+    .dataset-tab.active {{
+        background-color: {PRIMARY};
+        color: {LIGHT_TEXT};
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }}
+    
+    .dataset-tab.inactive {{
+        background-color: #E3F2FD;
+        color: {PRIMARY};
+    }}
+    
+    .dataset-tab.inactive:hover {{
+        background-color: #BBDEFB;
+        transform: translateY(-2px);
+    }}
+    
+    /* Metric cards */
+    .metric-card {{
+        background: {CARD_BG};
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        border-top: 4px solid {PRIMARY};
+        transition: all 0.3s ease;
+    }}
+    
+    .metric-card:hover {{
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+    }}
+    
+    /* Footer styling */
+    .footer {{
+        background: linear-gradient(90deg, {PRIMARY}, #2E86AB);
+        color: {LIGHT_TEXT};
+        padding: 25px;
+        border-radius: 8px;
+        margin-top: 30px;
+        box-shadow: 0 -4px 6px rgba(0,0,0,0.05);
+    }}
+    
+    /* Animation for important values */
+    @keyframes pulse {{
+        0% {{ transform: scale(1); }}
+        50% {{ transform: scale(1.05); }}
+        100% {{ transform: scale(1); }}
+    }}
+    
+    .pulse {{
+        animation: pulse 2s infinite;
+    }}
+    
+    /* Force all text to dark gray */
+    body, p, div, span, input, label, select, textarea, .stMarkdown, .stAlert, .stText, .stCodeBlock {{
+        color: {DARK_TEXT} !important;
+    }}
+    
+    /* Better contrast for warning messages */
+    .stAlert {{
+        background-color: #FFF3E0 !important;
+        border-left: 4px solid {WARNING} !important;
+    }}
+    
+    /* Image styling */
+    img {{
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        border: 1px solid #E0E0E0;
+    }}
 </style>
 """, unsafe_allow_html=True)
 
@@ -104,7 +358,7 @@ if 'datasets' not in st.session_state:
 if 'current_dataset' not in st.session_state:
     st.session_state.current_dataset = 'Dataset 1'
 
-# App header
+# App header with industrial theme
 st.markdown(f"""
 <div style="background: linear-gradient(90deg, {PRIMARY}, #2c3e50); padding:30px; border-radius:8px; margin-bottom:30px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
     <h1 style="color:{LIGHT_TEXT}; margin:0;">⚙️ Pipeline Integrity Management System</h1>
@@ -112,7 +366,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# Dataset tabs
+# Dataset tabs with industrial design
 with st.sidebar:
     st.markdown(f"""
     <div style="background: linear-gradient(90deg, {PRIMARY}, #2c3e50); padding:15px; border-radius:8px; margin-bottom:20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
@@ -133,10 +387,9 @@ with st.sidebar:
     
     st.markdown("---")
 
-    # Get current dataset inputs
-    current_inputs = st.session_state.datasets[st.session_state.current_dataset]['inputs']
-    
-    # Pipeline Parameters Section
+# Sidebar with industrial theme
+with st.sidebar:
+    # Dataset selection
     st.markdown(f"""
     <div style="background: linear-gradient(90deg, {PRIMARY}, #2c3e50); padding:15px; border-radius:8px; margin-bottom:20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
         <h3 style="color:{LIGHT_TEXT}; margin:0; text-align:center;">Pipeline Parameters</h3>
@@ -145,133 +398,172 @@ with st.sidebar:
     """, unsafe_allow_html=True)
     
     with st.expander("📏 Dimensional Parameters", expanded=True):
-        current_inputs['pipe_thickness'] = st.number_input('Pipe Thickness, t (mm)', 
-                                        min_value=0.0, max_value=30.0, 
-                                        value=current_inputs['pipe_thickness'], step=0.1,
-                                        help="Wall thickness of the pipe (typical range: 5-20mm)")
-        current_inputs['pipe_diameter'] = st.number_input('Pipe Diameter, D (mm)', 
-                                       min_value=0.0, max_value=5000.0, 
-                                       value=current_inputs['pipe_diameter'], step=1.0,
-                                       help="Outside diameter of pipe (typical range: 50-1000mm)")
-        current_inputs['pipe_length'] = st.number_input('Pipe Length, L (mm)', 
-                                     min_value=0.0, max_value=10000000.0, 
-                                     value=current_inputs['pipe_length'], step=1000.0,
-                                     help="Total length of pipeline section")
-        current_inputs['corrosion_length'] = st.number_input('Corrosion Length, Lc (mm)', 
-                                          min_value=0.0, max_value=1000.0, 
-                                          value=current_inputs['corrosion_length'], step=1.0,
-                                          help="Axial length of corrosion defect (typical < 500mm)")
-        current_inputs['corrosion_depth'] = st.number_input('Corrosion Depth, Dc (mm)', 
-                                         min_value=0.0, max_value=100.0, 
-                                         value=current_inputs['corrosion_depth'], step=0.1,
-                                         help="Maximum depth of corrosion (typically < 80% wall thickness)")
+        inputs = {
+            'pipe_thickness': st.number_input('Pipe Thickness, t (mm)', 
+                                            min_value=0.0, max_value=30.0, 
+                                            value=0.0, step=0.1,
+                                            help="Wall thickness of the pipe (typical range: 5-20mm)"),
+            'pipe_diameter': st.number_input('Pipe Diameter, D (mm)', 
+                                           min_value=0.0, max_value=5000.0, 
+                                           value=0.0, step=1.0,
+                                           help="Outside diameter of pipe (typical range: 50-1000mm)"),
+            'pipe_length': st.number_input('Pipe Length, L (mm)', 
+                                         min_value=0.0, max_value=10000000.0, 
+                                         value=0.0, step=1000.0,
+                                         help="Total length of pipeline section"),
+            'corrosion_length': st.number_input('Corrosion Length, Lc (mm)', 
+                                            min_value=0.0, max_value=1000.0, 
+                                            value=0.0, step=1.0,
+                                            help="Axial length of corrosion defect (typical < 500mm)"),
+            'corrosion_depth': st.number_input('Corrosion Depth, Dc (mm)', 
+                                           min_value=0.0, max_value=100.0, 
+                                           value=0.0, step=0.1,
+                                           help="Maximum depth of corrosion (typically < 80% wall thickness)")
+        }
+        
+        # Validation messages
+        if inputs['pipe_thickness'] > 0 and inputs['pipe_thickness'] < 5:
+            st.warning("⚠️ Pipe thickness below typical minimum (5mm)")
+        if inputs['pipe_thickness'] > 20:
+            st.warning("⚠️ Pipe thickness above typical maximum (20mm)")
+            
+        if inputs['pipe_diameter'] > 0 and inputs['pipe_diameter'] < 50:
+            st.warning("⚠️ Pipe diameter below typical minimum (50mm)")
+        if inputs['pipe_diameter'] > 1000:
+            st.warning("⚠️ Pipe diameter above typical maximum (1000mm)")
+            
+        if inputs['corrosion_length'] > 500:
+            st.warning("⚠️ Corrosion length exceeds typical maximum (500mm)")
+            
+        if inputs['corrosion_depth'] > 0 and inputs['pipe_thickness'] > 0:
+            if inputs['corrosion_depth'] > (0.8 * inputs['pipe_thickness']):
+                st.error("❌ Corrosion depth exceeds 80% of wall thickness - critical defect!")
 
     with st.expander("🧱 Material Properties", expanded=True):
-        current_inputs['yield_stress'] = st.number_input('Yield Stress, Sy (MPa)', 
-                                       min_value=0.0, max_value=2000.0, 
-                                       value=current_inputs['yield_stress'], step=10.0,
-                                       help="Material yield strength (typical range: 200-500 MPa)")
-        current_inputs['uts'] = st.number_input('Ultimate Tensile Strength, UTS (MPa)', 
-                                    min_value=0.0, max_value=3000.0, 
-                                    value=current_inputs['uts'], step=10.0,
-                                    help="Material ultimate tensile strength (typical range: 400-800 MPa)")
+        inputs['yield_stress'] = st.number_input('Yield Stress, Sy (MPa)', 
+                                               min_value=0.0, max_value=2000.0, 
+                                               value=0.0, step=10.0,
+                                               help="Material yield strength (typical range: 200-500 MPa)")
+        inputs['uts'] = st.number_input('Ultimate Tensile Strength, UTS (MPa)', 
+                                      min_value=0.0, max_value=3000.0, 
+                                      value=0.0, step=10.0,
+                                      help="Material ultimate tensile strength (typical range: 400-800 MPa)")
+        
+        # Material validation
+        if inputs['yield_stress'] > 0 and inputs['yield_stress'] < 200:
+            st.warning("⚠️ Yield stress below typical minimum (200 MPa)")
+        if inputs['yield_stress'] > 500:
+            st.warning("⚠️ Yield stress above typical maximum (500 MPa)")
+            
+        if inputs['uts'] > 0 and inputs['uts'] < 400:
+            st.warning("⚠️ UTS below typical minimum (400 MPa)")
+        if inputs['uts'] > 800:
+            st.warning("⚠️ UTS above typical maximum (800 MPa)")
+            
+        if inputs['yield_stress'] > 0 and inputs['uts'] > 0 and inputs['yield_stress'] > inputs['uts']:
+            st.error("❌ Yield stress cannot exceed ultimate tensile strength")
 
     with st.expander("📊 Operating Conditions", expanded=True):
-        current_inputs['max_pressure'] = st.number_input('Max Operating Pressure (MAOP) (MPa)', 
-                                       min_value=0.0, max_value=100.0, 
-                                       value=current_inputs['max_pressure'], step=0.1,
-                                       help="Maximum allowable operating pressure (typical range: 5-20 MPa)")
-        current_inputs['min_pressure'] = st.number_input('Min Operating Pressure (MPa)', 
-                                        min_value=0.0, max_value=100.0, 
-                                        value=current_inputs['min_pressure'], step=0.1,
-                                        help="Minimum operating pressure")
+        inputs['max_pressure'] = st.number_input('Max Operating Pressure (MAOP) (MPa)', 
+                                               min_value=0.0, max_value=100.0, 
+                                               value=0.0, step=0.1,
+                                               help="Maximum allowable operating pressure (typical range: 5-20 MPa)")
+        inputs['min_pressure'] = st.number_input('Min Operating Pressure (MPa)', 
+                                                min_value=0.0, max_value=100.0, 
+                                                value=0.0, step=0.1,
+                                                help="Minimum operating pressure")
+        
+        # Pressure validation
+        if inputs['max_pressure'] > 0 and inputs['max_pressure'] < 5:
+            st.warning("⚠️ MAOP below typical minimum (5 MPa)")
+        if inputs['max_pressure'] > 20:
+            st.warning("⚠️ MAOP above typical maximum (20 MPa)")
+            
+        if inputs['min_pressure'] > inputs['max_pressure']:
+            st.error("❌ Minimum pressure cannot exceed maximum pressure")
 
     with st.expander("📈 Corrosion Growth", expanded=True):
-        current_inputs['inspection_year'] = st.number_input('Inspection Year', 
-                                         min_value=1900, max_value=2100, 
-                                         value=current_inputs['inspection_year'], step=1,
-                                         help="Year of current inspection")
-        current_inputs['radial_corrosion_rate'] = st.number_input('Radial Corrosion Rate (mm/year)', 
-                                               min_value=0.0, max_value=10.0, 
-                                               value=current_inputs['radial_corrosion_rate'], step=0.01,
-                                               help="Depth increase per year (typical range: 0.1-0.5 mm/year)")
-        current_inputs['axial_corrosion_rate'] = st.number_input('Axial Corrosion Rate (mm/year)', 
-                                              min_value=0.0, max_value=10.0, 
-                                              value=current_inputs['axial_corrosion_rate'], step=0.01,
-                                              help="Length increase per year (typical range: 0.1-0.5 mm/year)")
-        current_inputs['projection_years'] = st.number_input('Projection Period (years)', 
-                                           min_value=0, max_value=50, 
-                                           value=current_inputs['projection_years'], step=1,
-                                           help="Years to project into future (typical range: 5-20 years)")
+        inputs['inspection_year'] = st.number_input('Inspection Year', 
+                                                  min_value=1900, max_value=2100, 
+                                                  value=2023, step=1,
+                                                  help="Year of current inspection")
+        inputs['radial_corrosion_rate'] = st.number_input('Radial Corrosion Rate (mm/year)', 
+                                                        min_value=0.0, max_value=10.0, 
+                                                        value=0.0, step=0.01,
+                                                        help="Depth increase per year (typical range: 0.1-0.5 mm/year)")
+        inputs['axial_corrosion_rate'] = st.number_input('Axial Corrosion Rate (mm/year)', 
+                                                       min_value=0.0, max_value=10.0, 
+                                                       value=0.0, step=0.01,
+                                                       help="Length increase per year (typical range: 0.1-0.5 mm/year)")
+        inputs['projection_years'] = st.number_input('Projection Period (years)', 
+                                                   min_value=0, max_value=50, 
+                                                   value=0, step=1,
+                                                   help="Years to project into future (typical range: 5-20 years)")
+        
+        # Corrosion rate validation
+        if inputs['radial_corrosion_rate'] > 0.5:
+            st.warning("⚠️ High radial corrosion rate (>0.5 mm/year)")
+        if inputs['axial_corrosion_rate'] > 0.5:
+            st.warning("⚠️ High axial corrosion rate (>0.5 mm/year)")
+            
+        if inputs['projection_years'] > 0 and inputs['projection_years'] < 5:
+            st.warning("⚠️ Short projection period (<5 years)")
+        if inputs['projection_years'] > 20:
+            st.warning("⚠️ Long projection period (>20 years)")
     
     st.markdown("---")
+    st.markdown(f"""
+    <div style="background: {CARD_BG}; padding:15px; border-radius:8px; margin-top:15px; box-shadow: 0 4px 8px rgba(0,0,0,0.08); border-left: 4px solid #43A047;">
+        <h4 style="color:{DARK_TEXT}; margin:0;">Safety Indicators</h4>
+        <div style="display: flex; align-items: center; margin-top:10px;">
+            <div style="background-color: #43A047; width:20px; height:20px; border-radius:50%; margin-right:10px;"></div>
+            <span style="color:{DARK_TEXT};">Safe: ERF ≤ 1</span>
+        </div>
+        <div style="display: flex; align-items: center;">
+            <div style="background-color: {WARNING}; width:20px; height:20px; border-radius:50%; margin-right:10px;"></div>
+            <span style="color:{DARK_TEXT};">Unsafe: ERF > 1</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
-    # Action buttons
-    if st.button('Run Analysis', use_container_width=True, type="primary"):
-        st.session_state.run_analysis = True
-        st.session_state.datasets[st.session_state.current_dataset]['results'] = None
-        st.rerun()
+    # Replace this:
+if st.button('Run Analysis', use_container_width=True, type="primary"):
+    st.session_state.run_analysis = True
+    # Store inputs for current dataset
+    st.session_state.datasets[st.session_state.current_dataset]['inputs'] = inputs
+    # Clear results to force recalculation
+    st.session_state.datasets[st.session_state.current_dataset]['results'] = None
+
+# With this:
+if st.button('Run Analysis', use_container_width=True, type="primary"):
+    st.session_state.run_analysis = True
+    # Inputs are already stored in real-time, just clear results
+    st.session_state.datasets[st.session_state.current_dataset]['results'] = None
+    st.rerun()
     
-    if st.button('Reset All', use_container_width=True):
-        st.session_state.run_analysis = False
-        # Reset all datasets to initial state
-        st.session_state.datasets = {
-            'Dataset 1': {
-                'inputs': {
-                    'pipe_thickness': 0.0,
-                    'pipe_diameter': 0.0,
-                    'pipe_length': 0.0,
-                    'corrosion_length': 0.0,
-                    'corrosion_depth': 0.0,
-                    'yield_stress': 0.0,
-                    'uts': 0.0,
-                    'max_pressure': 0.0,
-                    'min_pressure': 0.0,
-                    'inspection_year': 2023,
-                    'radial_corrosion_rate': 0.0,
-                    'axial_corrosion_rate': 0.0,
-                    'projection_years': 0
-                },
-                'results': None
+    # Replace this:
+if st.button('Reset All', use_container_width=True):
+    st.session_state.run_analysis = False
+    # Reset all datasets
+    for key in st.session_state.datasets:
+        st.session_state.datasets[key] = {'inputs': None, 'results': None}
+
+# With this:
+if st.button('Reset All', use_container_width=True):
+    st.session_state.run_analysis = False
+    # Reset all datasets to initial state
+    st.session_state.datasets = {
+        'Dataset 1': {
+            'inputs': {
+                'pipe_thickness': 0.0,
+                # ... all other fields initialized to 0
             },
-            'Dataset 2': {
-                'inputs': {
-                    'pipe_thickness': 0.0,
-                    'pipe_diameter': 0.0,
-                    'pipe_length': 0.0,
-                    'corrosion_length': 0.0,
-                    'corrosion_depth': 0.0,
-                    'yield_stress': 0.0,
-                    'uts': 0.0,
-                    'max_pressure': 0.0,
-                    'min_pressure': 0.0,
-                    'inspection_year': 2023,
-                    'radial_corrosion_rate': 0.0,
-                    'axial_corrosion_rate': 0.0,
-                    'projection_years': 0
-                },
-                'results': None
-            },
-            'Dataset 3': {
-                'inputs': {
-                    'pipe_thickness': 0.0,
-                    'pipe_diameter': 0.0,
-                    'pipe_length': 0.0,
-                    'corrosion_length': 0.0,
-                    'corrosion_depth': 0.0,
-                    'yield_stress': 0.0,
-                    'uts': 0.0,
-                    'max_pressure': 0.0,
-                    'min_pressure': 0.0,
-                    'inspection_year': 2023,
-                    'radial_corrosion_rate': 0.0,
-                    'axial_corrosion_rate': 0.0,
-                    'projection_years': 0
-                },
-                'results': None
-            }
-        }
-        st.rerun()
+            'results': None
+        },
+        'Dataset 2': {  # Same structure as Dataset 1 },
+        'Dataset 3': {  # Same structure as Dataset 1 }
+    }
+    st.rerun()
 
 # Image and intro section
 st.subheader('Pipeline Configuration')
