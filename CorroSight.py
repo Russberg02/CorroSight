@@ -527,11 +527,11 @@ with st.sidebar:
     """, unsafe_allow_html=True)
     
     if st.button('Run Analysis', use_container_width=True, type="primary"):
-    st.session_state.run_analysis = True
-    # Store inputs for current dataset (already being updated in real-time)
-    # Clear results to force recalculation
-    st.session_state.datasets[st.session_state.current_dataset]['results'] = None
-    st.rerun()
+        st.session_state.run_analysis = True
+        # Store inputs for current dataset (already being updated in real-time)
+        # Clear results to force recalculation
+        st.session_state.datasets[st.session_state.current_dataset]['results'] = None
+        st.rerun()
     
     if st.button('Reset All', use_container_width=True):
         st.session_state.run_analysis = False
