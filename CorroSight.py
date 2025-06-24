@@ -928,6 +928,129 @@ def display_analysis_results():
         </div>
         """, unsafe_allow_html=True)
 
+        # Update the fatigue diagram section
+st.markdown(f"""
+<div class="section-header">
+    <h3 style="margin:0;">📉 Fatigue Analysis Diagram (All Datasets)</h3>
+</div>
+""", unsafe_allow_html=True)
+
+# Only show if at least one dataset has been analyzed
+if any(d['results'] is not None for d in st.session_state.datasets.values()):
+    fig, ax = plt.subplots(figsize=(10, 6))
+    fig.patch.set_facecolor(CARD_BG)
+    
+    # Get the first dataset with results for the envelopes
+    ref_dataset = next((d for d in st.session_state.datasets.values() if d['results']), None)
+    
+    if ref_dataset:
+        # Use the first available dataset for the envelopes
+        stresses = ref_dataset['results']['stresses']
+        inputs = ref_dataset['inputs']
+        
+        # Generate x-axis values
+        x = np.linspace(0, inputs['uts']*1.1, 100)
+        
+        # Plot all criteria with distinct colors and line styles
+        ax.plot(x, stresses['Se']*(1 - x/inputs['uts']), 
+                color=COLORS['Goodman'], linewidth=2.5, linestyle='-', label='Goodman')
+        ax.plot(x, stresses['Se']*(1 - x/inputs['yield_stress']), 
+                color=COLORS['Soderberg'], linewidth=2.5, linestyle='--', label='Soderberg')
+        ax.plot(x, stresses['Se']*(1 - (x/inputs['uts'])**2), 
+                color=COLORS['Gerber'], linestyle=':', linewidth=2.5, label='Gerber')
+        ax.plot(x, stresses['Se']*(1 - x/stresses['sigma_f']), 
+                color=COLORS['Morrow'], linestyle='-.', linewidth=2.5, label='Morrow')
+        ax.plot(x, stresses['Se']*np.sqrt(1 - (x/inputs['yield_stress'])**2), 
+                color=COLORS['ASME-Elliptic'], linestyle=(0, (5, 1)), linewidth=2.5, label='ASME-Elliptic')
+        
+        # Mark key points
+        ax.scatter(0, stresses['Se'], color=DARK_TEXT, s=100, marker='o', 
+                  label=f'Se = {stresses["Se"]:.1f} MPa')
+        ax.scatter(inputs['uts'], 0, color=DARK_TEXT, s=100, marker='s', 
+                  label=f'UTS = {inputs["uts"]:.1f} MPa')
+        ax.scatter(inputs['yield_stress'], 0, color=DARK_TEXT, s=100, marker='^', 
+                  label=f'Sy = {inputs["yield_stress"]:.1f} MPa')
+    
+    # Plot operating points for all datasets with results
+    markers = ['o', 's', 'D']  # Circle, Square, Diamond
+    for i, (dataset_name, dataset) in enumerate(st.session_state.datasets.items()):
+        if dataset['results']:
+            ds = dataset['results']['stresses']
+            ax.scatter(ds['sigma_m'], ds['sigma_a'], 
+                      color=DATASET_COLORS[i], s=150, edgecolor=DARK_TEXT, zorder=10,
+                      marker=markers[i], label=f'{dataset_name} (σm={ds["sigma_m"]:.1f}, σa={ds["sigma_a"]:.1f})')
+    
+    # Determine axis limits based on all plotted points
+    all_points = []
+    for dataset in st.session_state.datasets.values():
+        if dataset['results']:
+            ds = dataset['results']['stresses']
+            all_points.append(ds['sigma_m'])
+            all_points.append(ds['sigma_a'])
+    
+    if all_points:
+        max_x = max(all_points) * 1.2
+        max_y = max(all_points) * 1.5
+    else:
+        max_x = inputs['uts'] * 1.1 if ref_dataset else 1000
+        max_y = stresses['Se'] * 1.5 if ref_dataset else 500
+    
+    ax.set_xlim(0, max_x)
+    ax.set_ylim(0, max_y)
+    
+    ax.set_xlabel('Mean Stress (σm) [MPa]', fontsize=10, color=DARK_TEXT)
+    ax.set_ylabel('Alternating Stress (σa) [MPa]', fontsize=10, color=DARK_TEXT)
+    ax.set_title('Fatigue Analysis Diagram', fontsize=12, fontweight='bold', color=DARK_TEXT)
+    ax.grid(True, linestyle='--', alpha=0.7, color=PRIMARY)
+    ax.set_facecolor(CARD_BG)
+    
+    # Set axis and tick colors
+    ax.spines['bottom'].set_color(DARK_TEXT)
+    ax.spines['top'].set_color(DARK_TEXT)
+    ax.spines['right'].set_color(DARK_TEXT)
+    ax.spines['left'].set_color(DARK_TEXT)
+    ax.tick_params(axis='x', colors=DARK_TEXT)
+    ax.tick_params(axis='y', colors=DARK_TEXT)
+    
+    # Create custom legend
+    ax.legend(loc='upper right', bbox_to_anchor=(1.35, 1), fontsize=9, 
+             facecolor=CARD_BG, edgecolor=DARK_TEXT)
+    
+    plt.tight_layout()
+    st.pyplot(fig)
+    
+    # Add interpretation guide
+    with st.expander("🔍 Diagram Interpretation Guide", expanded=True):
+        st.markdown(f"""
+        <div style="background:{CARD_BG}; padding:15px; border-radius:8px; 
+                    border-left: 4px solid {PRIMARY}; margin-top:15px;">
+            <h4>How to interpret this diagram:</h4>
+            <ul>
+                <li>Each <strong>colored point</strong> represents a dataset's operating point</li>
+                <li>The <strong>position</strong> shows the combination of mean stress (σm) and alternating stress (σa)</li>
+                <li>Points <strong>below all curves</strong> are in the safe region for all criteria</li>
+                <li>Points <strong>above any curve</strong> indicate potential fatigue failure for that criterion</li>
+                <li>Safety margin is indicated by <strong>distance to the nearest curve</strong></li>
+            </ul>
+            <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px;">
+                <div style="display: flex; align-items: center;">
+                    <div style="background: {DATASET_COLORS[0]}; width:20px; height:20px; border-radius:50%; margin-right:5px;"></div>
+                    <span>Dataset 1</span>
+                </div>
+                <div style="display: flex; align-items: center;">
+                    <div style="background: {DATASET_COLORS[1]}; width:20px; height:20px; border-radius:50%; margin-right:5px;"></div>
+                    <span>Dataset 2</span>
+                </div>
+                <div style="display: flex; align-items: center;">
+                    <div style="background: {DATASET_COLORS[2]}; width:20px; height:20px; border-radius:50%; margin-right:5px;"></div>
+                    <span>Dataset 3</span>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+else:
+    st.warning("Run analysis on at least one dataset to display the fatigue diagram")
+
 def create_references():
     st.markdown(f"""
     <div class="section-header">
