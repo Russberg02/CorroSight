@@ -415,7 +415,7 @@ def create_sidebar():
         dataset = st.radio(
             "Choose dataset:",
             ['Dataset 1', 'Dataset 2', 'Dataset 3'],
-            index=['Dataset 1', 'Dataset 2', 'Dataset 3'].index(st.session_state.current_dataset)
+            index=['Dataset 1', 'Dataset 2', 'Dataset 3'].index(st.session_state.current_dataset))
         
         if st.session_state.current_dataset != dataset:
             st.session_state.current_dataset = dataset
