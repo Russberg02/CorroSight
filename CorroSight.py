@@ -670,10 +670,6 @@ def calculate_pressures(inputs):
     UTS = inputs['uts']
     Sy = inputs['yield_stress']
     
-    # Validate inputs to prevent division by zero
-    if t <= 0 or D <= 0:
-        raise ValueError("Pipe thickness and diameter must be positive values")
-    
     # Use specialized models
     P_asme = modified_asme_b31g(D, t, Dc, Lc, Sy)
     P_dnv = dnv_rp_f101(D, t, Dc, Lc, UTS)
