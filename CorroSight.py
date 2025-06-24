@@ -296,7 +296,7 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-# Initialize session state for datasets
+# Initialize session state for datasets with complete input structure
 if 'datasets' not in st.session_state:
     st.session_state.datasets = {
         'Dataset 1': {
@@ -310,7 +310,7 @@ if 'datasets' not in st.session_state:
                 'uts': 0.0,
                 'max_pressure': 0.0,
                 'min_pressure': 0.0,
-                'inspection_year': 2000,
+                'inspection_year': 2023,
                 'radial_corrosion_rate': 0.0,
                 'axial_corrosion_rate': 0.0,
                 'projection_years': 0
@@ -328,7 +328,7 @@ if 'datasets' not in st.session_state:
                 'uts': 0.0,
                 'max_pressure': 0.0,
                 'min_pressure': 0.0,
-                'inspection_year': 2000,
+                'inspection_year': 2023,
                 'radial_corrosion_rate': 0.0,
                 'axial_corrosion_rate': 0.0,
                 'projection_years': 0
@@ -346,7 +346,7 @@ if 'datasets' not in st.session_state:
                 'uts': 0.0,
                 'max_pressure': 0.0,
                 'min_pressure': 0.0,
-                'inspection_year': 2000,
+                'inspection_year': 2023,
                 'radial_corrosion_rate': 0.0,
                 'axial_corrosion_rate': 0.0,
                 'projection_years': 0
@@ -485,7 +485,7 @@ with st.sidebar:
     with st.expander("📈 Corrosion Growth", expanded=True):
         inputs['inspection_year'] = st.number_input('Inspection Year', 
                                                   min_value=1900, max_value=2100, 
-                                                  value=2000, step=1,
+                                                  value=2023, step=1,
                                                   help="Year of current inspection")
         inputs['radial_corrosion_rate'] = st.number_input('Radial Corrosion Rate (mm/year)', 
                                                         min_value=0.0, max_value=10.0, 
@@ -510,26 +510,13 @@ with st.sidebar:
             st.warning("⚠️ Short projection period (<5 years)")
         if inputs['projection_years'] > 20:
             st.warning("⚠️ Long projection period (>20 years)")
-    
+
     st.markdown("---")
-    st.markdown(f"""
-    <div style="background: {CARD_BG}; padding:15px; border-radius:8px; margin-top:15px; box-shadow: 0 4px 8px rgba(0,0,0,0.08); border-left: 4px solid #43A047;">
-        <h4 style="color:{DARK_TEXT}; margin:0;">Safety Indicators</h4>
-        <div style="display: flex; align-items: center; margin-top:10px;">
-            <div style="background-color: #43A047; width:20px; height:20px; border-radius:50%; margin-right:10px;"></div>
-            <span style="color:{DARK_TEXT};">Safe: ERF ≤ 1</span>
-        </div>
-        <div style="display: flex; align-items: center;">
-            <div style="background-color: {WARNING}; width:20px; height:20px; border-radius:50%; margin-right:10px;"></div>
-            <span style="color:{DARK_TEXT};">Unsafe: ERF > 1</span>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
     
+    # Action buttons in sidebar
     if st.button('Run Analysis', use_container_width=True, type="primary"):
         st.session_state.run_analysis = True
-        # Store inputs for current dataset (already being updated in real-time)
-        # Clear results to force recalculation
+        # Inputs are already stored in real-time, just clear results
         st.session_state.datasets[st.session_state.current_dataset]['results'] = None
         st.rerun()
     
@@ -593,6 +580,21 @@ with st.sidebar:
             }
         }
         st.rerun()
+    
+    st.markdown("---")
+    st.markdown(f"""
+    <div style="background: {CARD_BG}; padding:15px; border-radius:8px; margin-top:15px; box-shadow: 0 4px 8px rgba(0,0,0,0.08); border-left: 4px solid #43A047;">
+        <h4 style="color:{DARK_TEXT}; margin:0;">Safety Indicators</h4>
+        <div style="display: flex; align-items: center; margin-top:10px;">
+            <div style="background-color: #43A047; width:20px; height:20px; border-radius:50%; margin-right:10px;"></div>
+            <span style="color:{DARK_TEXT};">Safe: ERF ≤ 1</span>
+        </div>
+        <div style="display: flex; align-items: center;">
+            <div style="background-color: {WARNING}; width:20px; height:20px; border-radius:50%; margin-right:10px;"></div>
+            <span style="color:{DARK_TEXT};">Unsafe: ERF > 1</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 # Image and intro section
 st.subheader('Pipeline Configuration')
@@ -1255,3 +1257,6 @@ st.markdown(f"""
     </div>
 </div>
 """, unsafe_allow_html=True)
+
+
+Recheck again everything and I want the dataset 1, 2 and 3 to be default 0 when selected NOT remain the previous data from different dataset
