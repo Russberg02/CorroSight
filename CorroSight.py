@@ -599,7 +599,7 @@ def create_sidebar():
     }
     st.rerun()
         
-        st.markdown("---")
+    st.markdown("---")
         
         # Safety indicators
         st.markdown(f"""
