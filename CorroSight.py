@@ -9,7 +9,7 @@ from matplotlib.lines import Line2D
 # Configuration
 st.set_page_config(
     layout="wide",
-    page_title="Corrosion Insight Assesment",
+    page_title="Pipeline Integrity Manager",
     page_icon="🔧"
 )
 
@@ -171,55 +171,55 @@ if 'datasets' not in st.session_state:
     st.session_state.datasets = {
         'Dataset 1': {
             'inputs': {
-                'pipe_thickness': 5.0,
-                'pipe_diameter': 100.0,
-                'pipe_length': 10000.0,
-                'corrosion_length': 50.0,
-                'corrosion_depth': 1.0,
-                'yield_stress': 250.0,
-                'uts': 400.0,
-                'max_pressure': 10.0,
-                'min_pressure': 5.0,
+                'pipe_thickness': 0.0,
+                'pipe_diameter': 0.0,
+                'pipe_length': 0.0,
+                'corrosion_length': 0.0,
+                'corrosion_depth': 0.0,
+                'yield_stress': 0.0,
+                'uts': 0.0,
+                'max_pressure': 0.0,
+                'min_pressure': 0.0,
                 'inspection_year': 2023,
-                'radial_corrosion_rate': 0.1,
-                'axial_corrosion_rate': 0.1,
-                'projection_years': 10
+                'radial_corrosion_rate': 0.0,
+                'axial_corrosion_rate': 0.0,
+                'projection_years': 0
             },
             'results': None
         },
         'Dataset 2': {
             'inputs': {
-                'pipe_thickness': 8.0,
-                'pipe_diameter': 200.0,
-                'pipe_length': 20000.0,
-                'corrosion_length': 100.0,
-                'corrosion_depth': 2.0,
-                'yield_stress': 300.0,
-                'uts': 500.0,
-                'max_pressure': 15.0,
-                'min_pressure': 7.0,
+                'pipe_thickness': 0.0,
+                'pipe_diameter': 0.0,
+                'pipe_length': 0.0,
+                'corrosion_length': 0.0,
+                'corrosion_depth': 0.0,
+                'yield_stress': 0.0,
+                'uts': 0.0,
+                'max_pressure': 0.0,
+                'min_pressure': 0.0,
                 'inspection_year': 2023,
-                'radial_corrosion_rate': 0.2,
-                'axial_corrosion_rate': 0.15,
-                'projection_years': 15
+                'radial_corrosion_rate': 0.0,
+                'axial_corrosion_rate': 0.0,
+                'projection_years': 0
             },
             'results': None
         },
         'Dataset 3': {
             'inputs': {
-                'pipe_thickness': 12.0,
-                'pipe_diameter': 300.0,
-                'pipe_length': 30000.0,
-                'corrosion_length': 150.0,
-                'corrosion_depth': 3.0,
-                'yield_stress': 350.0,
-                'uts': 550.0,
-                'max_pressure': 20.0,
-                'min_pressure': 10.0,
+                'pipe_thickness': 0.0,
+                'pipe_diameter': 0.0,
+                'pipe_length': 0.0,
+                'corrosion_length': 0.0,
+                'corrosion_depth': 0.0,
+                'yield_stress': 0.0,
+                'uts': 0.0,
+                'max_pressure': 0.0,
+                'min_pressure': 0.0,
                 'inspection_year': 2023,
-                'radial_corrosion_rate': 0.3,
-                'axial_corrosion_rate': 0.2,
-                'projection_years': 20
+                'radial_corrosion_rate': 0.0,
+                'axial_corrosion_rate': 0.0,
+                'projection_years': 0
             },
             'results': None
         }
@@ -396,8 +396,8 @@ def create_header():
     <div style="background: linear-gradient(90deg, {PRIMARY}, #2c3e50); 
                 padding:30px; border-radius:8px; margin-bottom:30px; 
                 box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-        <h1 style="color:{LIGHT_TEXT}; margin:0;">🔧 Corrosion Insight Assesment Tool</h1>
-        <p style="color:#E3F2FD; font-size:1.2rem;">Pipeline Integrity Management System & Fitness-for-Service Analysis</p>
+        <h1 style="color:{LIGHT_TEXT}; margin:0;">🔧 Pipeline Integrity Management System</h1>
+        <p style="color:#E3F2FD; font-size:1.2rem;">Corrosion Assessment & Fitness-for-Service Analysis</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -415,7 +415,8 @@ def create_sidebar():
         dataset = st.radio(
             "Choose dataset:",
             ['Dataset 1', 'Dataset 2', 'Dataset 3'],
-            index=['Dataset 1', 'Dataset 2', 'Dataset 3'].index(st.session_state.current_dataset))
+            index=['Dataset 1', 'Dataset 2', 'Dataset 3'].index(st.session_state.current_dataset)
+        )
         
         if st.session_state.current_dataset != dataset:
             st.session_state.current_dataset = dataset
@@ -437,13 +438,13 @@ def create_sidebar():
         current_data = st.session_state.datasets[st.session_state.current_dataset]
         inputs = current_data['inputs']
         
-        with st.expander("📏 Dimensional Parameters", expanded=True):
+        with st.expander("◻ Dimensional Parameters", expanded=True):
             inputs['pipe_thickness'] = st.number_input(
                 'Pipe Thickness, t (mm)',
-                min_value=0.1, max_value=30.0, value=inputs['pipe_thickness'], step=0.1)
+                min_value=0.0, max_value=30.0, value=inputs['pipe_thickness'], step=0.1)
             inputs['pipe_diameter'] = st.number_input(
                 'Pipe Diameter, D (mm)',
-                min_value=1.0, max_value=5000.0, value=inputs['pipe_diameter'], step=1.0)
+                min_value=0.0, max_value=5000.0, value=inputs['pipe_diameter'], step=1.0)
             inputs['pipe_length'] = st.number_input(
                 'Pipe Length, L (mm)',
                 min_value=0.0, max_value=10000000.0, value=inputs['pipe_length'], step=1000.0)
@@ -459,7 +460,7 @@ def create_sidebar():
                 if inputs['corrosion_depth'] > (0.8 * inputs['pipe_thickness']):
                     st.error("✗ Corrosion depth exceeds 80% of wall thickness - critical defect!")
         
-        with st.expander("🧱 Material Properties", expanded=True):
+        with st.expander("🟢 Material Properties", expanded=True):
             inputs['yield_stress'] = st.number_input(
                 'Yield Stress, Sy (MPa)',
                 min_value=0.0, max_value=2000.0, value=inputs['yield_stress'], step=10.0)
@@ -471,7 +472,7 @@ def create_sidebar():
                 if inputs['yield_stress'] > inputs['uts']:
                     st.error("✕ Yield stress cannot exceed ultimate tensile strength")
         
-        with st.expander("📊 Operating Conditions", expanded=True):
+        with st.expander("⚡ Operating Conditions", expanded=True):
             inputs['max_pressure'] = st.number_input(
                 'Max Operating Pressure (MAOP) (MPa)',
                 min_value=0.0, max_value=100.0, value=inputs['max_pressure'], step=0.1)
@@ -510,55 +511,55 @@ def create_sidebar():
             st.session_state.datasets = {
                 'Dataset 1': {
                     'inputs': {
-                        'pipe_thickness': 5.0,
-                        'pipe_diameter': 100.0,
-                        'pipe_length': 10000.0,
-                        'corrosion_length': 50.0,
-                        'corrosion_depth': 1.0,
-                        'yield_stress': 250.0,
-                        'uts': 400.0,
-                        'max_pressure': 10.0,
-                        'min_pressure': 5.0,
+                        'pipe_thickness': 0.0,
+                        'pipe_diameter': 0.0,
+                        'pipe_length': 0.0,
+                        'corrosion_length': 0.0,
+                        'corrosion_depth': 0.0,
+                        'yield_stress': 0.0,
+                        'uts': 0.0,
+                        'max_pressure': 0.0,
+                        'min_pressure': 0.0,
                         'inspection_year': 2023,
-                        'radial_corrosion_rate': 0.1,
-                        'axial_corrosion_rate': 0.1,
-                        'projection_years': 10
+                        'radial_corrosion_rate': 0.0,
+                        'axial_corrosion_rate': 0.0,
+                        'projection_years': 0
                     },
                     'results': None
                 },
                 'Dataset 2': {
                     'inputs': {
-                        'pipe_thickness': 8.0,
-                        'pipe_diameter': 200.0,
-                        'pipe_length': 20000.0,
-                        'corrosion_length': 100.0,
-                        'corrosion_depth': 2.0,
-                        'yield_stress': 300.0,
-                        'uts': 500.0,
-                        'max_pressure': 15.0,
-                        'min_pressure': 7.0,
+                        'pipe_thickness': 0.0,
+                        'pipe_diameter': 0.0,
+                        'pipe_length': 0.0,
+                        'corrosion_length': 0.0,
+                        'corrosion_depth': 0.0,
+                        'yield_stress': 0.0,
+                        'uts': 0.0,
+                        'max_pressure': 0.0,
+                        'min_pressure': 0.0,
                         'inspection_year': 2023,
-                        'radial_corrosion_rate': 0.2,
-                        'axial_corrosion_rate': 0.15,
-                        'projection_years': 15
+                        'radial_corrosion_rate': 0.0,
+                        'axial_corrosion_rate': 0.0,
+                        'projection_years': 0
                     },
                     'results': None
                 },
                 'Dataset 3': {
                     'inputs': {
-                        'pipe_thickness': 12.0,
-                        'pipe_diameter': 300.0,
-                        'pipe_length': 30000.0,
-                        'corrosion_length': 150.0,
-                        'corrosion_depth': 3.0,
-                        'yield_stress': 350.0,
-                        'uts': 550.0,
-                        'max_pressure': 20.0,
-                        'min_pressure': 10.0,
+                        'pipe_thickness': 0.0,
+                        'pipe_diameter': 0.0,
+                        'pipe_length': 0.0,
+                        'corrosion_length': 0.0,
+                        'corrosion_depth': 0.0,
+                        'yield_stress': 0.0,
+                        'uts': 0.0,
+                        'max_pressure': 0.0,
+                        'min_pressure': 0.0,
                         'inspection_year': 2023,
-                        'radial_corrosion_rate': 0.3,
-                        'axial_corrosion_rate': 0.2,
-                        'projection_years': 20
+                        'radial_corrosion_rate': 0.0,
+                        'axial_corrosion_rate': 0.0,
+                        'projection_years': 0
                     },
                     'results': None
                 }
@@ -596,7 +597,7 @@ def create_intro_section():
     
     with col2:
         st.markdown(f"""
-        <div style="background: {CARD_BG}; border-radius:8px; padding:20px; box-shadow: 0 4px 8px rgba(0,0,0,0.08);">
+        <div style="background:{CARD_BG}; border-radius:8px; padding:20px; box-shadow:0 4px 8px rgba(0,0,0,0.08);">
             <h4 style="border-bottom: 2px solid {PRIMARY}; padding-bottom:8px; color:{DARK_TEXT};">Assessment Protocol</h4>
             <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top:15px;">
                 <div style="display:flex; align-items:center;">
@@ -642,345 +643,250 @@ def create_intro_section():
 
 def display_analysis_results():
     if st.session_state.run_analysis:
-        current_data = st.session_state.datasets[st.session_state.current_dataset]
-        inputs = current_data['inputs']
-        
-        try:
-            # Calculate all parameters
-            pressures = calculate_pressures(inputs)
-            stresses = calculate_stresses(inputs)
-            fatigue = calculate_fatigue_criteria(
-                stresses['sigma_a'], stresses['sigma_m'],
-                stresses['Se'], inputs['uts'],
-                inputs['yield_stress'],
-                stresses['sigma_f']
-            )
-            
-            # Store results
-            current_data['results'] = {
-                'pressures': pressures,
-                'stresses': stresses,
-                'fatigue': fatigue
-            }
-            
-            # Burst Pressure Results
-            st.markdown(f"""
-            <div class="section-header">
-                <h3 style="margin:0;">📊 Burst Pressure Assessment ({st.session_state.current_dataset})</h3>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            burst_cols = st.columns(5)
-            burst_data = [
-                ("Von Mises", pressures['P_vm'], PRIMARY, inputs['max_pressure']/pressures['P_vm'] if pressures['P_vm'] > 0 else 0),
-                ("Tresca", pressures['P_tresca'], SECONDARY, inputs['max_pressure']/pressures['P_tresca'] if pressures['P_tresca'] > 0 else 0),
-                ("ASME B31G", pressures['P_asme'], ACCENT, inputs['max_pressure']/pressures['P_asme'] if pressures['P_asme'] > 0 else 0),
-                ("DNV", pressures['P_dnv'], "#6A1B9A", inputs['max_pressure']/pressures['P_dnv'] if pressures['P_dnv'] > 0 else 0),
-                ("PCORRC", pressures['P_pcorrc'], WARNING, inputs['max_pressure']/pressures['P_pcorrc'] if pressures['P_pcorrc'] > 0 else 0)
-            ]
-            
-            for i, (name, value, color, erf) in enumerate(burst_data):
-                safe = erf <= 1
-                status = "✓ Safe" if safe else "✗ Unsafe"
-                status_class = "safe" if safe else "unsafe"
-                pulse_class = "pulse" if not safe else ""
+        # Display results for all datasets that have been analyzed
+        for dataset_name, dataset in st.session_state.datasets.items():
+            if dataset['results'] is not None:
+                inputs = dataset['inputs']
+                results = dataset['results']
+                pressures = results['pressures']
+                stresses = results['stresses']
                 
-                with burst_cols[i]:
+                # Dataset header
+                st.markdown(f"<div class='section-header'><h3 style='margin:0;'>Analysis Results for {dataset_name}</h3></div>", 
+                            unsafe_allow_html=True)
+                
+                # Burst Pressure Results
+                st.markdown(f"<h4>📊 Burst Pressure Assessment</h4>", unsafe_allow_html=True)
+                
+                burst_cols = st.columns(5)
+                burst_data = [
+                    ("Von Mises", pressures['P_vm'], PRIMARY, inputs['max_pressure']/pressures['P_vm'] if pressures['P_vm'] > 0 else 0),
+                    ("Tresca", pressures['P_tresca'], SECONDARY, inputs['max_pressure']/pressures['P_tresca'] if pressures['P_tresca'] > 0 else 0),
+                    ("ASME B31G", pressures['P_asme'], ACCENT, inputs['max_pressure']/pressures['P_asme'] if pressures['P_asme'] > 0 else 0),
+                    ("DNV", pressures['P_dnv'], "#6A1B9A", inputs['max_pressure']/pressures['P_dnv'] if pressures['P_dnv'] > 0 else 0),
+                    ("PCORRC", pressures['P_pcorrc'], WARNING, inputs['max_pressure']/pressures['P_pcorrc'] if pressures['P_pcorrc'] > 0 else 0)
+                ]
+                
+                for i, (name, value, color, erf) in enumerate(burst_data):
+                    safe = erf <= 1
+                    status = "✓ Safe" if safe else "✗ Unsafe"
+                    status_class = "safe" if safe else "unsafe"
+                    pulse_class = "pulse" if not safe else ""
+                    
+                    with burst_cols[i]:
+                        st.markdown(f"""
+                        <div class="card {pulse_class}" style="border-left:4px solid {color};">
+                            <h4 style="color:{color}; margin-top:0;">{name}</h4>
+                            <div class="value-display">{value:.2f} MPa</div>
+                            <div style="font-size:1rem; text-align:center; margin:10px 0;">
+                                ERF: <span class="{status_class}" style="font-size:1.2rem;">{erf:.3f}</span>
+                            </div>
+                            <div style="text-align:center; margin-bottom:10px;">
+                                <strong>{status}</strong>
+                            </div>
+                            <div style="height:6px; background:#E0E0E0; border-radius:3px; margin:15px 0;">
+                                <div style="height:6px; background:{color}; width:{min(100, value/10*100)}%; border-radius:3px;"></div>
+                            </div>
+                        </div>
+                        """, unsafe_allow_html=True)
+                
+                # FFS Assessment
+                ffs_results, failure_years = calculate_ffs_assessment(
+                    inputs,
+                    inputs['corrosion_depth'],
+                    inputs['corrosion_length']
+                )
+                df = pd.DataFrame(ffs_results)
+                
+                # Failure predictions
+                st.markdown(f"<h4>✅ Fitness-for-Service Assessment</h4>", unsafe_allow_html=True)
+                metric_cols = st.columns(4)
+                with metric_cols[0]:
                     st.markdown(f"""
-                    <div class="card {pulse_class}" style="border-left:4px solid {color};">
-                        <h4 style="color:{color}; margin-top:0;">{name}</h4>
-                        <div class="value-display">{value:.2f} MPa</div>
-                        <div style="font-size:1rem; text-align:center; margin:10px 0;">
-                            ERF: <span class="{status_class}" style="font-size:1.2rem;">{erf:.3f}</span>
-                        </div>
-                        <div style="text-align:center; margin-bottom:10px;">
-                            <strong>{status}</strong>
-                        </div>
-                        <div style="height:6px; background:#E0E0E0; border-radius:3px; margin:15px 0;">
-                            <div style="height:6px; background:{color}; width:{min(100, value/10*100)}%; border-radius:3px;"></div>
+                    <div class="metric-card">
+                        <div style="font-size:1.1rem; color:{DARK_TEXT};">Current Year</div>
+                        <div style="font-size:2rem; font-weight:bold; color:{PRIMARY}; margin:10px 0;">
+                            {inputs['inspection_year']}
                         </div>
                     </div>
                     """, unsafe_allow_html=True)
-            
-            # FFS Assessment
-            st.markdown(f"""
-            <div class="section-header">
-                <h3 style="margin:0;">✅ Fitness-for-Service Assessment ({st.session_state.current_dataset})</h3>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            ffs_results, failure_years = calculate_ffs_assessment(
-                inputs,
-                inputs['corrosion_depth'],
-                inputs['corrosion_length']
-            )
-            df = pd.DataFrame(ffs_results)
-            
-            # Failure predictions
-            metric_cols = st.columns(4)
-            with metric_cols[0]:
-                st.markdown(f"""
-                <div class="metric-card">
-                    <div style="font-size:1.1rem; color:{DARK_TEXT};">Current Year</div>
-                    <div style="font-size:2rem; font-weight:bold; color:{PRIMARY}; margin:10px 0;">
-                        {inputs['inspection_year']}
+                    
+                with metric_cols[1]:
+                    critical_erf = df.iloc[0]['critical_erf']
+                    status_color = "#43A047" if critical_erf <= 1 else WARNING
+                    st.markdown(f"""
+                    <div class="metric-card">
+                        <div style="font-size:1.1rem; color:{DARK_TEXT};">Critical ERF Now</div>
+                        <div style="font-size:2rem; font-weight:bold; color:{status_color}; margin:10px 0;">
+                            {critical_erf:.3f}
+                        </div>
                     </div>
-                </div>
-                """, unsafe_allow_html=True)
-                
-            with metric_cols[1]:
-                critical_erf = df.iloc[0]['critical_erf']
-                status_color = "#43A047" if critical_erf <= 1 else WARNING
-                st.markdown(f"""
-                <div class="metric-card">
-                    <div style="font-size:1.1rem; color:{DARK_TEXT};">Critical ERF Now</div>
-                    <div style="font-size:2rem; font-weight:bold; color:{status_color}; margin:10px 0;">
-                        {critical_erf:.3f}
+                    """, unsafe_allow_html=True)
+                    
+                with metric_cols[2]:
+                    asme_fail = failure_years.get('ASME', "Beyond projection")
+                    color = WARNING if asme_fail != "Beyond projection" else DARK_TEXT
+                    st.markdown(f"""
+                    <div class="metric-card">
+                        <div style="font-size:1.1rem; color:{DARK_TEXT};">ASME Failure Year</div>
+                        <div style="font-size:2rem; font-weight:bold; color:{color}; margin:10px 0;">
+                            {asme_fail}
+                        </div>
                     </div>
-                </div>
-                """, unsafe_allow_html=True)
-                
-            with metric_cols[2]:
-                asme_fail = failure_years.get('ASME', "Beyond projection")
-                color = WARNING if asme_fail != "Beyond projection" else DARK_TEXT
-                st.markdown(f"""
-                <div class="metric-card">
-                    <div style="font-size:1.1rem; color:{DARK_TEXT};">ASME Failure Year</div>
-                    <div style="font-size:2rem; font-weight:bold; color:{color}; margin:10px 0;">
-                        {asme_fail}
+                    """, unsafe_allow_html=True)
+                    
+                with metric_cols[3]:
+                    dnv_fail = failure_years.get('DNV', "Beyond projection")
+                    color = WARNING if dnv_fail != "Beyond projection" else DARK_TEXT
+                    st.markdown(f"""
+                    <div class="metric-card">
+                        <div style="font-size:1.1rem; color:{DARK_TEXT};">DNV Failure Year</div>
+                        <div style="font-size:2rem; font-weight:bold; color:{color}; margin:10px 0;">
+                            {dnv_fail}
+                        </div>
                     </div>
-                </div>
-                """, unsafe_allow_html=True)
+                    """, unsafe_allow_html=True)
                 
-            with metric_cols[3]:
-                dnv_fail = failure_years.get('DNV', "Beyond projection")
-                color = WARNING if dnv_fail != "Beyond projection" else DARK_TEXT
-                st.markdown(f"""
-                <div class="metric-card">
-                    <div style="font-size:1.1rem; color:{DARK_TEXT};">DNV Failure Year</div>
-                    <div style="font-size:2rem; font-weight:bold; color:{color}; margin:10px 0;">
-                        {dnv_fail}
+                # Burst Pressure Projection
+                st.markdown(f"<h4>📈 Burst Pressure Projection</h4>", unsafe_allow_html=True)
+                
+                fig1, ax1 = plt.subplots(figsize=(10, 5))
+                fig1.patch.set_facecolor(CARD_BG)
+                
+                ax1.plot(df['year'], df['P_asme'], label='ASME B31G', color=COLORS['Goodman'], linewidth=2)
+                ax1.plot(df['year'], df['P_dnv'], label='DNV-RP-F101', color=COLORS['Soderberg'], linewidth=2)
+                ax1.plot(df['year'], df['P_pcorrc'], label='PCORRC', color=COLORS['Gerber'], linewidth=2)
+                
+                maop = inputs['max_pressure']
+                ax1.axhline(y=maop, color=WARNING, linestyle='-', linewidth=2.5, label='MAOP')
+                ax1.axhspan(ymin=0, ymax=maop, color=WARNING, alpha=0.1, label='Unsafe Zone')
+                
+                y_min = min(df[['P_asme','P_dnv','P_pcorrc']].min().min(), maop * 0.7)
+                y_max = max(df[['P_asme','P_dnv','P_pcorrc']].max().max(), maop * 1.3)
+                ax1.set_ylim(y_min, y_max)
+                
+                ax1.set_xlabel('Year', fontsize=10, color=DARK_TEXT)
+                ax1.set_ylabel('Burst Pressure (MPa)', fontsize=10, color=DARK_TEXT)
+                ax1.set_title(f'Burst Pressure Projection ({dataset_name})', fontsize=12, fontweight='bold', color=DARK_TEXT)
+                ax1.grid(True, linestyle='-', alpha=0.7, color=PRIMARY)
+                ax1.legend(loc='upper right', facecolor=CARD_BG, edgecolor=DARK_TEXT)
+                st.pyplot(fig1)
+                
+                # ERF Projection
+                st.markdown(f"<h4>📉 Estimated Repair Factor (ERF) Projection</h4>", unsafe_allow_html=True)
+                
+                fig2, ax2 = plt.subplots(figsize=(10, 5))
+                fig2.patch.set_facecolor(CARD_BG)
+                
+                ax2.plot(df['year'], df['erf_asme'], label='ASME ERF', color=COLORS['Goodman'], linewidth=2)
+                ax2.plot(df['year'], df['erf_dnv'], label='DNV ERF', color=COLORS['Soderberg'], linewidth=2)
+                ax2.plot(df['year'], df['erf_pcorrc'], label='PCORRC ERF', color=COLORS['Gerber'], linewidth=2)
+                
+                ax2.axhline(y=1.0, color=WARNING, linestyle='-', linewidth=2.5, label='Safety Threshold (ERF=1)')
+                erf_max = max(df[['erf_asme','erf_dnv','erf_pcorrc']].max().max(), 1.3)
+                ax2.axhspan(ymin=1.0, ymax=erf_max, color=WARNING, alpha=0.1, label='Unsafe Zone')
+                
+                erf_min = min(df[['erf_asme','erf_dnv','erf_pcorrc']].min().min(), 0.7)
+                ax2.set_ylim(erf_min, erf_max)
+                
+                ax2.set_xlabel('Year', fontsize=10, color=DARK_TEXT)
+                ax2.set_ylabel('ERF (MAOP/Burst Pressure)', fontsize=10, color=DARK_TEXT)
+                ax2.set_title(f'ERF Projection ({dataset_name})', fontsize=12, fontweight='bold', color=DARK_TEXT)
+                ax2.grid(True, linestyle='-', alpha=0.7, color=PRIMARY)
+                ax2.legend(loc='upper right', facecolor=CARD_BG, edgecolor=DARK_TEXT)
+                st.pyplot(fig2)
+                
+                # Detailed tables separated for burst pressure and ERF
+                with st.expander(f"📊 Detailed Burst Pressure Projection Data ({dataset_name})", expanded=False):
+                    burst_df = df[['year', 'depth', 'length', 'P_asme', 'P_dnv', 'P_pcorrc']].copy()
+                    burst_df['Depth'] = burst_df['depth'].apply(lambda x: f"{x:.2f} mm")
+                    burst_df['Length'] = burst_df['length'].apply(lambda x: f"{x:.2f} mm")
+                    burst_df['ASME Burst'] = burst_df['P_asme'].apply(lambda x: f"{x:.2f} MPa")
+                    burst_df['DNV Burst'] = burst_df['P_dnv'].apply(lambda x: f"{x:.2f} MPa")
+                    burst_df['PCORRC Burst'] = burst_df['P_pcorrc'].apply(lambda x: f"{x:.2f} MPa")
+                    
+                    st.dataframe(
+                        burst_df[['year', 'Depth', 'Length', 'ASME Burst', 'DNV Burst', 'PCORRC Burst']],
+                        height=300
+                    )
+                
+                with st.expander(f"📈 Detailed ERF Projection Data ({dataset_name})", expanded=False):
+                    erf_df = df[['year', 'erf_asme', 'erf_dnv', 'erf_pcorrc', 'critical_erf']].copy()
+                    erf_df['Critical ERF'] = erf_df['critical_erf'].apply(lambda x: f"{x:.3f}")
+                    
+                    # Highlight failure years
+                    def highlight_erf(val):
+                        erf = float(val)
+                        color = WARNING if erf >= 1.0 else "#43A047"
+                        weight = "bold" if erf >= 1.0 else "normal"
+                        return f'color: {color}; font-weight: {weight};'
+                    
+                    st.dataframe(
+                        erf_df.style.applymap(highlight_erf, subset=['Critical ERF']),
+                        height=300
+                    )
+                
+                # Stress Analysis
+                st.markdown(f"<h4>⚙️ Stress Analysis</h4>", unsafe_allow_html=True)
+                
+                stress_col1, stress_col2 = st.columns([1, 1])
+                
+                with stress_col1:
+                    st.markdown(f"""
+                    <div style="background:{CARD_BG}; border-radius:8px; padding:20px; box-shadow:0 4px 8px rgba(0,0,0,0.08);">
+                        <h4>Stress Parameters</h4>
+                        <table style="width:100%; border-collapse:collapse; font-size:1rem;">
+                            <tr style="border-bottom:1px solid #E0E0E0;">
+                                <td style="padding:10px;">Max VM Stress</td>
+                                <td style="text-align:right; padding:10px; font-weight:bold; color:{PRIMARY};">{stresses['sigma_vm_max']:.2f} MPa</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid #E0E0E0;">
+                                <td style="padding:10px;">Min VM Stress</td>
+                                <td style="text-align:right; padding:10px; font-weight:bold; color:{PRIMARY};">{stresses['sigma_vm_min']:.2f} MPa</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid #E0E0E0;">
+                                <td style="padding:10px;">Alternating Stress</td>
+                                <td style="text-align:right; padding:10px; font-weight:bold; color:{SECONDARY};">{stresses['sigma_a']:.2f} MPa</td>
+                            </tr>
+                            <tr style="border-bottom:1px solid #E0E0E0;">
+                                <td style="padding:10px;">Mean Stress</td>
+                                <td style="text-align:right; padding:10px; font-weight:bold; color:{SECONDARY};">{stresses['sigma_m']:.2f} MPa</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:10px;">Endurance Limit</td>
+                                <td style="text-align:right; padding:10px; font-weight:bold; color:{ACCENT};">{stresses['Se']:.2f} MPa</td>
+                            </tr>
+                        </table>
                     </div>
-                </div>
-                """, unsafe_allow_html=True)
-            
-            # Burst Pressure Projection
-            st.markdown(f"""
-            <div class="section-header">
-                <h3 style="margin:0;">📈 Burst Pressure Projection ({st.session_state.current_dataset})</h3>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            fig1, ax1 = plt.subplots(figsize=(10, 5))
-            fig1.patch.set_facecolor(CARD_BG)
-            
-            ax1.plot(df['year'], df['P_asme'], label='ASME B31G', color=COLORS['Goodman'], linewidth=2)
-            ax1.plot(df['year'], df['P_dnv'], label='DNV-RP-F101', color=COLORS['Soderberg'], linewidth=2)
-            ax1.plot(df['year'], df['P_pcorrc'], label='PCORRC', color=COLORS['Gerber'], linewidth=2)
-            
-            maop = inputs['max_pressure']
-            ax1.axhline(y=maop, color=WARNING, linestyle='-', linewidth=2.5, label='MAOP')
-            ax1.axhspan(ymin=0, ymax=maop, color=WARNING, alpha=0.1, label='Unsafe Zone')
-            
-            y_min = min(df[['P_asme','P_dnv','P_pcorrc']].min().min(), maop * 0.7)
-            y_max = max(df[['P_asme','P_dnv','P_pcorrc']].max().max(), maop * 1.3)
-            ax1.set_ylim(y_min, y_max)
-            
-            ax1.set_xlabel('Year', fontsize=10, color=DARK_TEXT)
-            ax1.set_ylabel('Burst Pressure (MPa)', fontsize=10, color=DARK_TEXT)
-            ax1.set_title('Burst Pressure Projection (Unsafe when Below MAOP)', fontsize=12, fontweight='bold', color=DARK_TEXT)
-            ax1.grid(True, linestyle='-', alpha=0.7, color=PRIMARY)
-            ax1.legend(loc='upper right', facecolor=CARD_BG, edgecolor=DARK_TEXT)
-            st.pyplot(fig1)
-            
-            # ERF Projection
-            st.markdown(f"""
-            <div class="section-header">
-                <h3 style="margin:0;">📉 Estimated Repair Factor (ERF) Projection ({st.session_state.current_dataset})</h3>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            fig2, ax2 = plt.subplots(figsize=(10, 5))
-            fig2.patch.set_facecolor(CARD_BG)
-            
-            ax2.plot(df['year'], df['erf_asme'], label='ASME ERF', color=COLORS['Goodman'], linewidth=2)
-            ax2.plot(df['year'], df['erf_dnv'], label='DNV ERF', color=COLORS['Soderberg'], linewidth=2)
-            ax2.plot(df['year'], df['erf_pcorrc'], label='PCORRC ERF', color=COLORS['Gerber'], linewidth=2)
-            
-            ax2.axhline(y=1.0, color=WARNING, linestyle='-', linewidth=2.5, label='Safety Threshold (ERF=1)')
-            erf_max = max(df[['erf_asme','erf_dnv','erf_pcorrc']].max().max(), 1.3)
-            ax2.axhspan(ymin=1.0, ymax=erf_max, color=WARNING, alpha=0.1, label='Unsafe Zone')
-            
-            erf_min = min(df[['erf_asme','erf_dnv','erf_pcorrc']].min().min(), 0.7)
-            ax2.set_ylim(erf_min, erf_max)
-            
-            ax2.set_xlabel('Year', fontsize=10, color=DARK_TEXT)
-            ax2.set_ylabel('ERF (MAOP/Burst Pressure)', fontsize=10, color=DARK_TEXT)
-            ax2.set_title('ERF Projection (Unsafe when Above 1.0)', fontsize=12, fontweight='bold', color=DARK_TEXT)
-            ax2.grid(True, linestyle='-', alpha=0.7, color=PRIMARY)
-            ax2.legend(loc='upper right', facecolor=CARD_BG, edgecolor=DARK_TEXT)
-            st.pyplot(fig2)
-            
-            # Detailed table
-            with st.expander("Detailed Projection Data", expanded=False):
-                display_df = df.copy()
-                display_df['Depth'] = display_df['depth'].apply(lambda x: f"{x:.2f} mm")
-                display_df['Length'] = display_df['length'].apply(lambda x: f"{x:.2f} mm")
-                display_df['ASME Burst'] = display_df['P_asme'].apply(lambda x: f"{x:.2f} MPa")
-                display_df['DNV Burst'] = display_df['P_dnv'].apply(lambda x: f"{x:.2f} MPa")
-                display_df['PCORRC Burst'] = display_df['P_pcorrc'].apply(lambda x: f"{x:.2f} MPa")
-                display_df['Critical ERF'] = display_df['critical_erf'].apply(lambda x: f"{x:.3f}")
+                    """, unsafe_allow_html=True)
+                    
+                with stress_col2:
+                    fig, ax = plt.subplots(figsize=(6, 4))
+                    categories = ['Max Stress', 'Min Stress', 'Amplitude']
+                    values = [stresses['sigma_vm_max'], stresses['sigma_vm_min'], stresses['sigma_a']]
+                    colors = [PRIMARY, SECONDARY, ACCENT]
+                    bars = ax.bar(categories, values, color=colors, edgecolor=DARK_TEXT)
+                    
+                    for bar in bars:
+                        height = bar.get_height()
+                        ax.text(bar.get_x() + bar.get_width()/2., height,
+                                f'{height:.1f} MPa',
+                                ha='center', va='bottom', fontsize=10, color=DARK_TEXT)
+                    
+                    ax.set_ylim(0, max(values) * 1.2)
+                    ax.set_title('Stress Distribution', fontsize=12, color=DARK_TEXT, fontweight='bold')
+                    ax.grid(axis='y', linestyle='-', alpha=0.7, color=PRIMARY)
+                    ax.spines['top'].set_visible(False)
+                    ax.spines['right'].set_visible(False)
+                    ax.spines['left'].set_color(DARK_TEXT)
+                    ax.spines['bottom'].set_color(DARK_TEXT)
+                    ax.tick_params(axis='x', colors=DARK_TEXT)
+                    ax.tick_params(axis='y', colors=DARK_TEXT)
+                    ax.set_facecolor(CARD_BG)
+                    plt.tight_layout()
+                    st.pyplot(fig)
                 
-                def highlight_erf(val):
-                    erf = float(val)
-                    color = WARNING if erf >= 1.0 else "#43A047"
-                    weight = "bold" if erf >= 1.0 else "normal"
-                    return f'color: {color}; font-weight: {weight};'
-                
-                st.dataframe(
-                    display_df[['year', 'Depth', 'Length', 'ASME Burst', 'DNV Burst', 'PCORRC Burst', 'Critical ERF']]
-                    .style.applymap(highlight_erf, subset=['Critical ERF']),
-                    height=300
-                )
-            
-            # Stress Analysis
-            st.markdown(f"""
-            <div class="section-header">
-                <h3 style="margin:0;">⚙️ Stress Analysis ({st.session_state.current_dataset})</h3>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            stress_col1, stress_col2 = st.columns([1, 1])
-            
-            with stress_col1:
-                st.markdown(f"""
-                <div style="background:{CARD_BG}; border-radius:8px; padding:20px; box-shadow:0 4px 8px rgba(0,0,0,0.08);">
-                    <h4>Stress Parameters</h4>
-                    <table style="width:100%; border-collapse:collapse; font-size:1rem;">
-                        <tr style="border-bottom:1px solid #E0E0E0;">
-                            <td style="padding:10px;">Max VM Stress</td>
-                            <td style="text-align:right; padding:10px; font-weight:bold; color:{PRIMARY};">{stresses['sigma_vm_max']:.2f} MPa</td>
-                        </tr>
-                        <tr style="border-bottom:1px solid #E0E0E0;">
-                            <td style="padding:10px;">Min VM Stress</td>
-                            <td style="text-align:right; padding:10px; font-weight:bold; color:{PRIMARY};">{stresses['sigma_vm_min']:.2f} MPa</td>
-                        </tr>
-                        <tr style="border-bottom:1px solid #E0E0E0;">
-                            <td style="padding:10px;">Alternating Stress</td>
-                            <td style="text-align:right; padding:10px; font-weight:bold; color:{SECONDARY};">{stresses['sigma_a']:.2f} MPa</td>
-                        </tr>
-                        <tr style="border-bottom:1px solid #E0E0E0;">
-                            <td style="padding:10px;">Mean Stress</td>
-                            <td style="text-align:right; padding:10px; font-weight:bold; color:{SECONDARY};">{stresses['sigma_m']:.2f} MPa</td>
-                        </tr>
-                        <tr>
-                            <td style="padding:10px;">Endurance Limit</td>
-                            <td style="text-align:right; padding:10px; font-weight:bold; color:{ACCENT};">{stresses['Se']:.2f} MPa</td>
-                        </tr>
-                    </table>
-                </div>
-                """, unsafe_allow_html=True)
-                
-            with stress_col2:
-                fig, ax = plt.subplots(figsize=(6, 4))
-                categories = ['Max Stress', 'Min Stress', 'Amplitude']
-                values = [stresses['sigma_vm_max'], stresses['sigma_vm_min'], stresses['sigma_a']]
-                colors = [PRIMARY, SECONDARY, ACCENT]
-                bars = ax.bar(categories, values, color=colors, edgecolor=DARK_TEXT)
-                
-                for bar in bars:
-                    height = bar.get_height()
-                    ax.text(bar.get_x() + bar.get_width()/2., height,
-                            f'{height:.1f} MPa',
-                            ha='center', va='bottom', fontsize=10, color=DARK_TEXT)
-                
-                ax.set_ylim(0, max(values) * 1.2)
-                ax.set_title('Stress Distribution', fontsize=12, color=DARK_TEXT, fontweight='bold')
-                ax.grid(axis='y', linestyle='-', alpha=0.7, color=PRIMARY)
-                ax.spines['top'].set_visible(False)
-                ax.spines['right'].set_visible(False)
-                ax.spines['left'].set_color(DARK_TEXT)
-                ax.spines['bottom'].set_color(DARK_TEXT)
-                ax.tick_params(axis='x', colors=DARK_TEXT)
-                ax.tick_params(axis='y', colors=DARK_TEXT)
-                ax.set_facecolor(CARD_BG)
-                plt.tight_layout()
-                st.pyplot(fig)
-            
-            # Fatigue Analysis
-            st.markdown(f"""
-            <div class="section-header">
-                <h3 style="margin:0;">📊 Fatigue Analysis Diagram (All Datasets)</h3>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            fig, ax = plt.subplots(figsize=(10, 6))
-            fig.patch.set_facecolor(CARD_BG)
-            
-            x = np.linspace(0, inputs['uts']*1.1, 100)
-            
-            ax.plot(x, stresses['Se']*(1 - x/inputs['uts']),
-                     color=COLORS['Goodman'], linewidth=2.5, linestyle='-', label='Goodman')
-            ax.plot(x, stresses['Se']*(1 - x/inputs['yield_stress']),
-                     color=COLORS['Soderberg'], linewidth=2.5, linestyle='-', label='Soderberg')
-            ax.plot(x, stresses['Se']*(1 - (x/inputs['uts'])**2),
-                     color=COLORS['Gerber'], linestyle='-', linewidth=2.5, label='Gerber')
-            ax.plot(x, stresses['Se']*(1 - x/stresses['sigma_f']),
-                     color=COLORS['Morrow'], linestyle='-', linewidth=2.5, label='Morrow')
-            ax.plot(x, stresses['Se']*np.sqrt(1 - (x/inputs['yield_stress'])**2),
-                     color=COLORS['ASME-Elliptic'], linestyle=(0, (5, 1)), linewidth=2.5, label='ASME-Elliptic')
-            
-            markers = ['o', 's', 'D']
-            for i, (dataset_name, dataset) in enumerate(st.session_state.datasets.items()):
-                if dataset['results']:
-                    ds = dataset['results']['stresses']
-                    ax.scatter(ds['sigma_m'], ds['sigma_a'],
-                                color=DATASET_COLORS[i], s=150, edgecolor=DARK_TEXT, zorder=10,
-                                marker=markers[i], label=f'{dataset_name} (σm={ds["sigma_m"]:.1f}, σa={ds["sigma_a"]:.1f})')
-            
-            ax.scatter(0, stresses['Se'], color=DARK_TEXT, s=100, marker='o',
-                        label=f'Se = {stresses["Se"]:.1f} MPa')
-            ax.scatter(inputs['uts'], 0, color=DARK_TEXT, s=100, marker='s',
-                        label=f'UTS = {inputs["uts"]:.1f} MPa')
-            ax.scatter(inputs['yield_stress'], 0, color=DARK_TEXT, s=100, marker='^',
-                        label=f'Sy = {inputs["yield_stress"]:.1f} MPa')
-            
-            all_points = []
-            for dataset in st.session_state.datasets.values():
-                if dataset['results']:
-                    ds = dataset['results']['stresses']
-                    all_points.append(ds['sigma_m'])
-                    all_points.append(ds['sigma_a'])
-            
-            max_x = inputs['uts'] * 1.1
-            max_y = stresses['Se'] * 1.5
-            
-            if all_points:
-                max_x = max(max_x, max(all_points) * 1.2)
-                max_y = max(max_y, max(all_points) * 1.5)
-            
-            ax.set_xlim(0, max_x)
-            ax.set_ylim(0, max_y)
-            ax.set_xlabel('Mean Stress (σm) [MPa]', fontsize=10, color=DARK_TEXT)
-            ax.set_ylabel('Alternating Stress (σa) [MPa]', fontsize=10, color=DARK_TEXT)
-            ax.set_title('Fatigue Analysis Diagram', fontsize=12, fontweight='bold', color=DARK_TEXT)
-            ax.grid(True, linestyle='-', alpha=0.7, color=PRIMARY)
-            ax.set_facecolor(CARD_BG)
-            
-            ax.spines['bottom'].set_color(DARK_TEXT)
-            ax.spines['top'].set_color(DARK_TEXT)
-            ax.spines['right'].set_color(DARK_TEXT)
-            ax.spines['left'].set_color(DARK_TEXT)
-            ax.tick_params(axis='x', colors=DARK_TEXT)
-            ax.tick_params(axis='y', colors=DARK_TEXT)
-            
-            ax.legend(loc='upper right', bbox_to_anchor=(1.35, 1), fontsize=9, 
-                      facecolor=CARD_BG, edgecolor=DARK_TEXT)
-            plt.tight_layout()
-            st.pyplot(fig)
-            
-        except Exception as e:
-            st.error(f"❌ Error in calculations: {str(e)}")
+                st.markdown("---")  # Separator between datasets
     else:
         st.markdown(f"""
         <div style="background:{CARD_BG}; text-align:center; padding:40px 20px; border-radius:8px; box-shadow:0 4px 8px rgba(0,0,0,0.08);">
@@ -1036,7 +942,7 @@ def create_footer():
     <div class="footer">
         <div style="display:flex; justify-content:space-between; align-items:center;">
             <div>
-                <h4 style="margin:0; color:{LIGHT_TEXT};">Corrosion Insight Assesment v2.0</h4>
+                <h4 style="margin:0; color:{LIGHT_TEXT};">Pipeline Integrity Manager v2.0</h4>
                 <p style="margin:5px 0 0; color:#BBDEFB;">Fitness-for-Service Analysis</p>
             </div>
             <div style="text-align:right;">
