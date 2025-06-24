@@ -1254,5 +1254,3 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-
-Recheck again everything and I want the dataset 1, 2 and 3 to be default 0 when selected NOT remain the previous data from different dataset
