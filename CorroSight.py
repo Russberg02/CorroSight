@@ -601,8 +601,8 @@ def create_sidebar():
         
     st.markdown("---")
         
-        # Safety indicators
-        st.markdown(f"""
+    # Safety indicators
+    st.markdown(f"""
         <div style="background: {CARD_BG}; padding:15px; border-radius:8px; 
                     margin-top:15px; box-shadow: 0 4px 8px rgba(0,0,0,0.08); 
                     border-left: 4px solid #43A047;">
