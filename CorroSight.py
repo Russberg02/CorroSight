@@ -406,8 +406,8 @@ def create_header():
     <div style="background: linear-gradient(90deg, {PRIMARY}, #2c3e50); 
                 padding:30px; border-radius:8px; margin-bottom:30px; 
                 box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-        <h1 style="color:{LIGHT_TEXT}; margin:0;">🔧 Pipeline Integrity Management System</h1>
-        <p style="color:#E3F2FD; font-size:1.2rem;">Corrosion Assessment & Fitness-for-Service Analysis</p>
+        <h1 style="color:{LIGHT_TEXT}; margin:0;">🔧 Corrosion Insight Assesment Tool</h1>
+        <p style="color:#E3F2FD; font-size:1.2rem;">Pipeline Integrity & Fitness-for-Service Analysis</p>
     </div>
     """, unsafe_allow_html=True)
 
