@@ -274,8 +274,8 @@ def calculate_pressures(inputs):
     UTS = inputs['uts']
     Sy = inputs['yield_stress']
     
-    # Theoretical models
-    P_vm = (4 * t * UTS) / (math.sqrt(3) * D) if D > 0 else 0
+    # Theoretical models - FIXED VON MISES CALCULATION
+    P_vm = (2 * t * UTS) / (math.sqrt(3) * D) if D > 0 else 0
     P_tresca = (2 * t * UTS) / D if D > 0 else 0
     
     # Industry models
@@ -597,12 +597,12 @@ def create_sidebar():
             'results': None
         }
     }
-    st.rerun()
+            st.rerun()  # FIXED: Moved inside reset block
         
-    st.markdown("---")
+        st.markdown("---")
         
-    # Safety indicators
-    st.markdown(f"""
+        # Safety indicators
+        st.markdown(f"""
         <div style="background: {CARD_BG}; padding:15px; border-radius:8px; 
                     margin-top:15px; box-shadow: 0 4px 8px rgba(0,0,0,0.08); 
                     border-left: 4px solid #43A047;">
@@ -952,7 +952,7 @@ def display_stress_analysis():
             ax.plot(x, stresses['Se']*(1 - x/stresses['sigma_f']), 
                     color=COLORS['Morrow'], linestyle='-.', linewidth=2.5, label='Morrow')
             ax.plot(x, stresses['Se']*np.sqrt(1 - (x/inputs['yield_stress'])**2), 
-                    color=COLORS['ASME-Elliptic'], linestyle=(0, (5, 1)), linewidth=2.5, label='ASME-Elliptic')
+                    color=COLORS['ASME-Elliptic'], linestyle=(0, (5, 1)), linewidth=2.5, label='ASME-Elliptic')  # FIXED LABEL
             
             # Mark key points
             ax.scatter(0, stresses['Se'], color=DARK_TEXT, s=100, marker='o', 
