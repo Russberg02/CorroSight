@@ -237,6 +237,8 @@ if 'current_dataset' not in st.session_state:
     st.session_state.current_dataset = 'Dataset 1'
 if 'run_analysis' not in st.session_state:
     st.session_state.run_analysis = False
+if 'show_datasets' not in st.session_state:
+    st.session_state.show_datasets = [True, False, False]  # Default: show only Dataset 1
 
 # Engineering Calculations
 def modified_asme_b31g(D, t, d, L, Sy):
@@ -274,7 +276,7 @@ def calculate_pressures(inputs):
     UTS = inputs['uts']
     Sy = inputs['yield_stress']
     
-    # Theoretical models - FIXED VON MISES CALCULATION
+    # Theoretical models
     P_vm = (2 * t * UTS) / (math.sqrt(3) * D) if D > 0 else 0
     P_tresca = (2 * t * UTS) / D if D > 0 else 0
     
@@ -430,6 +432,26 @@ def create_sidebar():
             st.session_state.current_dataset = dataset
             st.rerun()
             
+        st.markdown("---")
+        
+        # Dataset visibility controls
+        st.markdown(f"""
+        <div style="background: linear-gradient(90deg, {PRIMARY}, #2c3e50); 
+                    padding:15px; border-radius:8px; margin-bottom:20px; 
+                    box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            <h3 style="color:{LIGHT_TEXT}; margin:0; text-align:center;">Dataset Visibility</h3>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("**Select which datasets to display:**")
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.session_state.show_datasets[0] = st.checkbox("Dataset 1", value=st.session_state.show_datasets[0])
+        with col2:
+            st.session_state.show_datasets[1] = st.checkbox("Dataset 2", value=st.session_state.show_datasets[1])
+        with col3:
+            st.session_state.show_datasets[2] = st.checkbox("Dataset 3", value=st.session_state.show_datasets[2])
+        
         st.markdown("---")
         
         # Pipeline parameters
@@ -597,7 +619,7 @@ def create_sidebar():
             'results': None
         }
     }
-            st.rerun()  # FIXED: Moved inside reset block
+            st.rerun()
         
         st.markdown("---")
         
@@ -860,7 +882,7 @@ def display_dataset_results(dataset_name):
         )
 
 def display_stress_analysis():
-    """Display combined stress analysis for all datasets"""
+    """Display combined stress analysis for selected datasets"""
     st.markdown(f"""
     <div class="section-header">
         <h2 style="margin:0;">Stress Analysis</h2>
@@ -870,24 +892,27 @@ def display_stress_analysis():
     # 5a. Stress Parameters
     st.markdown(f"<h3>⚙️ Stress Parameters</h3>", unsafe_allow_html=True)
     
-    # Create table of stress parameters
+    # Create table of stress parameters - only for visible datasets
     stress_data = []
-    for dataset_name, data in st.session_state.datasets.items():
-        if data['results']:
-            s = data['results']['stresses']
-            stress_data.append({
-                'Dataset': dataset_name,
-                'Max VM Stress (MPa)': f"{s['sigma_vm_max']:.2f}",
-                'Min VM Stress (MPa)': f"{s['sigma_vm_min']:.2f}",
-                'Alternating Stress (MPa)': f"{s['sigma_a']:.2f}",
-                'Mean Stress (MPa)': f"{s['sigma_m']:.2f}",
-                'Endurance Limit (MPa)': f"{s['Se']:.2f}"
-            })
+    for i in range(3):
+        if st.session_state.show_datasets[i]:
+            dataset_name = f'Dataset {i+1}'
+            data = st.session_state.datasets[dataset_name]
+            if data['results']:
+                s = data['results']['stresses']
+                stress_data.append({
+                    'Dataset': dataset_name,
+                    'Max VM Stress (MPa)': f"{s['sigma_vm_max']:.2f}",
+                    'Min VM Stress (MPa)': f"{s['sigma_vm_min']:.2f}",
+                    'Alternating Stress (MPa)': f"{s['sigma_a']:.2f}",
+                    'Mean Stress (MPa)': f"{s['sigma_m']:.2f}",
+                    'Endurance Limit (MPa)': f"{s['Se']:.2f}"
+                })
     
     if stress_data:
         st.table(pd.DataFrame(stress_data))
     
-    # 5b. Stress Distribution Graph
+    # 5b. Stress Distribution Graph - only for visible datasets
     st.markdown(f"<h3>📊 Stress Distribution Comparison</h3>", unsafe_allow_html=True)
     
     if any(data['results'] for data in st.session_state.datasets.values()):
@@ -898,17 +923,23 @@ def display_stress_analysis():
         width = 0.25
         x = np.arange(len(categories))
         
-        for i, (dataset_name, data) in enumerate(st.session_state.datasets.items()):
-            if data['results']:
-                s = data['results']['stresses']
-                values = [s['sigma_vm_max'], s['sigma_vm_min'], s['sigma_a']]
-                ax.bar(x + i * width, values, width, 
-                      color=DATASET_COLORS[i], edgecolor=DARK_TEXT,
-                      label=dataset_name)
+        # Track number of visible datasets for positioning
+        visible_count = 0
+        for i in range(3):
+            if st.session_state.show_datasets[i]:
+                dataset_name = f'Dataset {i+1}'
+                data = st.session_state.datasets[dataset_name]
+                if data['results']:
+                    s = data['results']['stresses']
+                    values = [s['sigma_vm_max'], s['sigma_vm_min'], s['sigma_a']]
+                    ax.bar(x + visible_count * width, values, width, 
+                          color=DATASET_COLORS[i], edgecolor=DARK_TEXT,
+                          label=dataset_name)
+                    visible_count += 1
         
         ax.set_ylabel('Stress (MPa)', fontsize=10, color=DARK_TEXT)
         ax.set_title('Stress Distribution Comparison', fontsize=12, fontweight='bold', color=DARK_TEXT)
-        ax.set_xticks(x + width)
+        ax.set_xticks(x + width * (visible_count-1)/2 if visible_count > 0 else 0)
         ax.set_xticklabels(categories)
         ax.grid(axis='y', linestyle='--', alpha=0.7, color=PRIMARY)
         ax.legend()
@@ -924,15 +955,24 @@ def display_stress_analysis():
         
         st.pyplot(fig)
     
-    # 5c. Fatigue Graph
+    # 5c. Fatigue Graph - only for visible datasets
     st.markdown(f"<h3>🔄 Fatigue Analysis Diagram</h3>", unsafe_allow_html=True)
     
-    if any(data['results'] for data in st.session_state.datasets.values()):
+    # Get active datasets
+    active_datasets = []
+    for i in range(3):
+        if st.session_state.show_datasets[i]:
+            dataset_name = f'Dataset {i+1}'
+            data = st.session_state.datasets[dataset_name]
+            if data['results']:
+                active_datasets.append((dataset_name, data))
+    
+    if any(data['results'] for name, data in active_datasets):
         fig, ax = plt.subplots(figsize=(10, 6))
         fig.patch.set_facecolor(CARD_BG)
         
-        # Use the first dataset with results for the envelopes
-        ref_dataset = next((d for d in st.session_state.datasets.values() if d['results']), None)
+        # Use the first active dataset for the envelopes
+        ref_dataset = active_datasets[0][1] if active_datasets else None
         
         if ref_dataset:
             # Use the first available dataset for the envelopes
@@ -952,7 +992,7 @@ def display_stress_analysis():
             ax.plot(x, stresses['Se']*(1 - x/stresses['sigma_f']), 
                     color=COLORS['Morrow'], linestyle='-.', linewidth=2.5, label='Morrow')
             ax.plot(x, stresses['Se']*np.sqrt(1 - (x/inputs['yield_stress'])**2), 
-                    color=COLORS['ASME-Elliptic'], linestyle=(0, (5, 1)), linewidth=2.5, label='ASME-Elliptic')  # FIXED LABEL
+                    color=COLORS['ASME-Elliptic'], linestyle=(0, (5, 1)), linewidth=2.5, label='ASME-Elliptic')
             
             # Mark key points
             ax.scatter(0, stresses['Se'], color=DARK_TEXT, s=100, marker='o', 
@@ -962,9 +1002,9 @@ def display_stress_analysis():
             ax.scatter(inputs['yield_stress'], 0, color=DARK_TEXT, s=100, marker='^', 
                       label=f'Sy = {inputs["yield_stress"]:.1f} MPa')
         
-        # Plot operating points for all datasets with results
+        # Plot operating points for active datasets with results
         markers = ['o', 's', 'D']  # Circle, Square, Diamond
-        for i, (dataset_name, data) in enumerate(st.session_state.datasets.items()):
+        for i, (dataset_name, data) in enumerate(active_datasets):
             if data['results']:
                 ds = data['results']['stresses']
                 ax.scatter(ds['sigma_m'], ds['sigma_a'], 
@@ -973,18 +1013,21 @@ def display_stress_analysis():
         
         # Determine axis limits based on all plotted points
         all_points = []
-        for dataset in st.session_state.datasets.values():
-            if dataset['results']:
-                ds = dataset['results']['stresses']
+        for dataset_name, data in active_datasets:
+            if data['results']:
+                ds = data['results']['stresses']
                 all_points.append(ds['sigma_m'])
                 all_points.append(ds['sigma_a'])
         
         if all_points:
             max_x = max(all_points) * 1.2
             max_y = max(all_points) * 1.5
+        elif ref_dataset:
+            max_x = inputs['uts'] * 1.1
+            max_y = stresses['Se'] * 1.5
         else:
-            max_x = inputs['uts'] * 1.1 if ref_dataset else 1000
-            max_y = stresses['Se'] * 1.5 if ref_dataset else 500
+            max_x = 1000
+            max_y = 500
         
         ax.set_xlim(0, max_x)
         ax.set_ylim(0, max_y)
@@ -1039,21 +1082,24 @@ def display_stress_analysis():
             </div>
             """, unsafe_allow_html=True)
     
-    # 5d. Detailed Comparisons
+    # 5d. Detailed Comparisons - only for visible datasets
     st.markdown(f"<h3>📝 Detailed Fatigue Criteria Comparison</h3>", unsafe_allow_html=True)
     
     fatigue_data = []
-    for dataset_name, data in st.session_state.datasets.items():
-        if data['results']:
-            f = data['results']['fatigue']
-            fatigue_data.append({
-                'Dataset': dataset_name,
-                'Goodman Factor': f"{f['Goodman']:.3f}",
-                'Soderberg Factor': f"{f['Soderberg']:.3f}",
-                'Gerber Factor': f"{f['Gerber']:.3f}",
-                'Morrow Factor': f"{f['Morrow']:.3f}",
-                'ASME-Elliptic Factor': f"{f['ASME-Elliptic']:.3f}"
-            })
+    for i in range(3):
+        if st.session_state.show_datasets[i]:
+            dataset_name = f'Dataset {i+1}'
+            data = st.session_state.datasets[dataset_name]
+            if data['results']:
+                f = data['results']['fatigue']
+                fatigue_data.append({
+                    'Dataset': dataset_name,
+                    'Goodman Factor': f"{f['Goodman']:.3f}",
+                    'Soderberg Factor': f"{f['Soderberg']:.3f}",
+                    'Gerber Factor': f"{f['Gerber']:.3f}",
+                    'Morrow Factor': f"{f['Morrow']:.3f}",
+                    'ASME-Elliptic Factor': f"{f['ASME-Elliptic']:.3f}"
+                })
     
     if fatigue_data:
         df_fatigue = pd.DataFrame(fatigue_data)
@@ -1151,17 +1197,19 @@ def main():
     create_intro_section()
     
     if st.session_state.run_analysis:
-        # 2. Analysis Result for Dataset 1
-        display_dataset_results('Dataset 1')
+        # Only show datasets that are selected
+        if st.session_state.show_datasets[0]:
+            display_dataset_results('Dataset 1')
+        if st.session_state.show_datasets[1]:
+            display_dataset_results('Dataset 2')
+        if st.session_state.show_datasets[2]:
+            display_dataset_results('Dataset 3')
         
-        # 3. Analysis Result for Dataset 2
-        display_dataset_results('Dataset 2')
-        
-        # 4. Analysis Result for Dataset 3
-        display_dataset_results('Dataset 3')
-        
-        # 5. Stress Analysis
-        display_stress_analysis()
+        # Only show stress analysis if at least one dataset is selected
+        if any(st.session_state.show_datasets):
+            display_stress_analysis()
+        else:
+            st.warning("No datasets selected for analysis. Please select at least one dataset to view results.")
     else:
         st.markdown(f"""
         <div style="background:{CARD_BG}; text-align:center; padding:40px 20px; border-radius:8px; box-shadow:0 4px 8px rgba(0,0,0,0.08);">
