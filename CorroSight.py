@@ -9,7 +9,7 @@ from matplotlib.lines import Line2D
 # Configuration
 st.set_page_config(
     layout="wide",
-    page_title="Pipeline Integrity Manager",
+    page_title="Corrosion Insight Tool",
     page_icon="🔧"
 )
 
@@ -468,7 +468,7 @@ def create_sidebar():
         current_data = st.session_state.datasets[st.session_state.current_dataset]
         inputs = current_data['inputs']
         
-        with st.expander("◻ Dimensional Parameters", expanded=True):
+        with st.expander("📏 Dimensional Parameters", expanded=True):
             inputs['pipe_thickness'] = st.number_input(
                 'Pipe Thickness, t (mm)',
                 min_value=0.0, max_value=30.0, value=inputs['pipe_thickness'], step=0.1)
@@ -490,7 +490,7 @@ def create_sidebar():
                 if inputs['corrosion_depth'] > (0.8 * inputs['pipe_thickness']):
                     st.error("✗ Corrosion depth exceeds 80% of wall thickness - critical defect!")
         
-        with st.expander("🟢 Material Properties", expanded=True):
+        with st.expander("🧱 Material Properties", expanded=True):
             inputs['yield_stress'] = st.number_input(
                 'Yield Stress, Sy (MPa)',
                 min_value=0.0, max_value=2000.0, value=inputs['yield_stress'], step=10.0)
@@ -502,7 +502,7 @@ def create_sidebar():
                 if inputs['yield_stress'] > inputs['uts']:
                     st.error("✕ Yield stress cannot exceed ultimate tensile strength")
         
-        with st.expander("⚡ Operating Conditions", expanded=True):
+        with st.expander("📊 Operating Conditions", expanded=True):
             inputs['max_pressure'] = st.number_input(
                 'Max Operating Pressure (MAOP) (MPa)',
                 min_value=0.0, max_value=100.0, value=inputs['max_pressure'], step=0.1)
@@ -1174,16 +1174,16 @@ def create_footer():
     <div class="footer">
         <div style="display:flex; justify-content:space-between; align-items:center;">
             <div>
-                <h4 style="margin:0; color:{LIGHT_TEXT};">Pipeline Integrity Manager v2.0</h4>
-                <p style="margin:5px 0 0; color:#BBDEFB;">Fitness-for-Service Analysis</p>
+                <h4 style="margin:0; color:{LIGHT_TEXT};">Corrosion Insight Tool v2.0</h4>
+                <p style="margin:5px 0 0; color:#BBDEFB;">Pipeline Integrity & Fitness-for-Service Analysis</p>
             </div>
             <div style="text-align:right;">
-                <p style="margin:0; color:#BBDEFB;">Technical Support: pipeline@engineering.com</p>
-                <p style="margin:0; color:#BBDEFB;">Phone: +1 (555) 123-4567</p>
+                <p style="margin:0; color:#BBDEFB;">Technical Support: rrussellspielberg@gnail.com.com</p>
+                <p style="margin:0; color:#BBDEFB;">Phone: +60 12-8697725</p>
             </div>
         </div>
         <div style="text-align:center; margin-top:20px; color:#BBDEFB;">
-            © 2023 Pipeline Engineering Solutions | All rights reserved
+            © 2025 Pipeline Engineering Solutions | All rights reserved
         </div>
     </div>
     """, unsafe_allow_html=True)
