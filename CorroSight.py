@@ -1178,8 +1178,12 @@ def create_footer():
                 <p style="margin:5px 0 0; color:#BBDEFB;">Pipeline Integrity & Fitness-for-Service Analysis</p>
             </div>
             <div style="text-align:right;">
-                <p style="margin:0; color:#BBDEFB;">Technical Support: rrussellspielberg@gnail.com.com</p>
-                <p style="margin:0; color:#BBDEFB;">Phone: +60 12-8697725</p>
+                <p style="margin:0; color:#BBDEFB;">Technical Support: 2022471008@student.uitm.edu.my</p>
+                <p style="margin:0; color:#BBDEFB;">Aflfliation:</p>
+                <p style="margin:0; color:#BBDEF8;">Ir. Dr. Mohd Shahrom bin Ismail(Project Advisor)</p>
+                <p style="margin:0; color:#BBDEF8;">Russell Spielberg(Project Leader)</p>
+                <p style="margin:0; color:#BBDEF8;">Mohd. Faiz(Project member)</p>
+                <p style="margin:0; color:#BBDEF8;">Muhd. Taufik(Project member)</p>
             </div>
         </div>
         <div style="text-align:center; margin-top:20px; color:#BBDEFB;">
