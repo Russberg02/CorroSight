@@ -471,19 +471,19 @@ def create_sidebar():
         with st.expander("📏 Dimensional Parameters", expanded=True):
             inputs['pipe_thickness'] = st.number_input(
                 'Pipe Thickness, t (mm)',
-                min_value=0.0, max_value=30.0, value=inputs['pipe_thickness'], step=0.1)
+                min_value=0.0, value=inputs['pipe_thickness'], step=0.1)
             inputs['pipe_diameter'] = st.number_input(
                 'Pipe Diameter, D (mm)',
-                min_value=0.0, max_value=5000.0, value=inputs['pipe_diameter'], step=1.0)
+                min_value=0.0, value=inputs['pipe_diameter'], step=1.0)
             inputs['pipe_length'] = st.number_input(
                 'Pipe Length, L (mm)',
-                min_value=0.0, max_value=10000000.0, value=inputs['pipe_length'], step=1000.0)
+                min_value=0.0, value=inputs['pipe_length'], step=1000.0)
             inputs['corrosion_length'] = st.number_input(
                 'Corrosion Length, Lc (mm)',
-                min_value=0.0, max_value=1000.0, value=inputs['corrosion_length'], step=1.0)
+                min_value=0.0, value=inputs['corrosion_length'], step=1.0)
             inputs['corrosion_depth'] = st.number_input(
                 'Corrosion Depth, Dc (mm)',
-                min_value=0.0, max_value=100.0, value=inputs['corrosion_depth'], step=0.1)
+                min_value=0.0, value=inputs['corrosion_depth'], step=0.1)
             
             # Validation
             if inputs['corrosion_depth'] > 0 and inputs['pipe_thickness'] > 0:
