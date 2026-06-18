@@ -1183,12 +1183,8 @@ def create_footer():
                 <p style="margin:0; color:#BBDEFB;">Aflfliation:</p>
                 <p style="margin:0; color:#BBDEF8;">Dr. Adel Aldhahebi(Project Supervisor)</p>
                 <p style="margin:0; color:#BBDEF8;">Russell Spielberg(Project Leader)</p>
-
-
-        <div style="text-align:center; margin-top:20px; color:#BBDEFB;">
             © 2026 Pipeline Engineering Solutions | All rights reserved
-        </div>
-    """, unsafe_allow_html=True)
+
 
 # Main Application
 def main():
