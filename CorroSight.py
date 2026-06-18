@@ -1184,12 +1184,10 @@ def create_footer():
                 <p style="margin:0; color:#BBDEF8;">Dr. Adel Aldhahebi(Project Supervisor)</p>
                 <p style="margin:0; color:#BBDEF8;">Russell Spielberg(Project Leader)</p>
 
-            </div>
-        </div>
+
         <div style="text-align:center; margin-top:20px; color:#BBDEFB;">
-            © 2025 Pipeline Engineering Solutions | All rights reserved
+            © 2026 Pipeline Engineering Solutions | All rights reserved
         </div>
-    </div>
     """, unsafe_allow_html=True)
 
 # Main Application
