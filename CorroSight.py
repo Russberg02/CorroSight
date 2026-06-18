@@ -1181,10 +1181,9 @@ def create_footer():
                 <p style="margin:0; color:#BBDEFB;">Technical Support:</p>
                 <p style="margin:0; color:#BBDEFB;">2022471008@student.uitm.edu.my</p>
                 <p style="margin:0; color:#BBDEFB;">Aflfliation:</p>
-                <p style="margin:0; color:#BBDEF8;">Ir. Dr. Mohd Shahrom bin Ismail(Project Advisor)</p>
+                <p style="margin:0; color:#BBDEF8;">Dr. Adel Aldhahebi(Project Supervisor)</p>
                 <p style="margin:0; color:#BBDEF8;">Russell Spielberg(Project Leader)</p>
-                <p style="margin:0; color:#BBDEF8;">Mohd. Faiz(Project Member)</p>
-                <p style="margin:0; color:#BBDEF8;">Muhd. Taufik(Project Member)</p>
+
             </div>
         </div>
         <div style="text-align:center; margin-top:20px; color:#BBDEFB;">
