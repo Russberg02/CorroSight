@@ -1219,7 +1219,7 @@ def main():
                 <div class="progress-bar" style="width:30%;"></div>
             </div>
         </div>
-        """, unsafe_allow_html=True)
+        "", unsafe_allow_html=True)
     
     create_references()
     create_footer()
