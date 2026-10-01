@@ -1211,7 +1211,7 @@ def main():
     else:
         st.markdown(f"""
         <div style="background:{CARD_BG}; text-align:center; padding:40px 20px; border-radius:8px; box-shadow:0 4px 8px rgba(0,0,0,0.08);">
-            <h4 style="color:{DARK_TEXT}; margin-bottom:20px;">⏳ Ready for Analysis</h4>
+            <h4 style="color:{DARK_TEXT}; margin-bottom:20px;"> Ready for Analysis</h4>
             <p style="color:{DARK_TEXT}; font-size:1.1rem; max-width:600px; margin:0 auto;">
                 Select a dataset, enter pipeline parameters in the sidebar, and click 'Run Analysis'
             </p>
